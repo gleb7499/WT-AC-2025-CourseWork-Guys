@@ -47,7 +47,7 @@
 - application_id: reference -> Application.id, не пустое → ошибка: «Выберите заявку.»
 - filename: string, не пустое → ошибка: «Имя файла не может быть пустым.»
 - file_path: string, автозаполнение
-- file_size: integer, не больше 10MB → ошибка: «Размер файла не должен превышать 10 МБ.»
+- file_size: integer, не больше 10 МБ → ошибка: «Размер файла не должен превышать 10 МБ.»
 - mime_type: string, допустимые типы: pdf, doc, docx, jpg, png → ошибка: «Недопустимый тип файла.»
 - uploaded_by: reference -> User.id, автозаполнение
 - uploaded_at: datetime, автозаполнение

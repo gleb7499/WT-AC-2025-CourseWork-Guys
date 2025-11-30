@@ -248,7 +248,7 @@ History (аудит изменений статуса)
       "fromStatus": "draft",
       "toStatus": "pending",
       "changedBy": "user-id",
-      "changedAt": "2025-11-15T10:00:00Z",
+      "changedAt": "2025-01-15T10:00:00Z",
       "comment": null
     }
   ]
