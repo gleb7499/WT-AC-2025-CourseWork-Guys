@@ -50,6 +50,15 @@
   - uploaded_by: reference -> User.id
   - uploaded_at: datetime
 
+- StatusHistory
+  - id: UUID
+  - application_id: reference -> Application.id
+  - from_status_id: reference -> Status.id (nullable, null при создании)
+  - to_status_id: reference -> Status.id
+  - changed_by: reference -> User.id
+  - changed_at: datetime
+  - comment: string (опционально)
+
 Связи (ER-эскиз)
 
 - User 1..* Application (пользователь создаёт заявки)
@@ -57,6 +66,7 @@
 - Form 1..* Application (по форме создаются заявки)
 - Status 1..* Application (статус применяется к заявкам)
 - Application 1..* Attachment (заявка имеет вложения)
+- Application 1..* StatusHistory (заявка имеет историю статусов)
 
 Обязательные поля и ограничения (кратко)
 
@@ -69,6 +79,9 @@
 - Attachment.application_id → Application.id (FK, not null)
 - Attachment.uploaded_by → User.id (FK, not null)
 - Form.created_by → User.id (FK, not null)
+- StatusHistory.application_id → Application.id (FK, not null)
+- StatusHistory.to_status_id → Status.id (FK, not null)
+- StatusHistory.changed_by → User.id (FK, not null)
 
 API — верхнеуровневые ресурсы и операции
 
@@ -235,7 +248,7 @@ History (аудит изменений статуса)
       "fromStatus": "draft",
       "toStatus": "pending",
       "changedBy": "user-id",
-      "changedAt": "2025-10-13T10:00:00Z",
+      "changedAt": "2025-11-15T10:00:00Z",
       "comment": null
     }
   ]
@@ -258,21 +271,21 @@ erDiagram
     APPLICATION ||--o{ STATUS_HISTORY : tracks
 
     USER {
-      id int PK
+      id UUID PK
       username varchar
       email varchar
       role varchar
     }
     FORM {
-      id int PK
+      id UUID PK
       name varchar
       description text
       fields jsonb
       is_active boolean
-      created_by int FK
+      created_by UUID FK
     }
     STATUS {
-      id int PK
+      id UUID PK
       name varchar
       description text
       color varchar
@@ -280,30 +293,30 @@ erDiagram
       is_final boolean
     }
     APPLICATION {
-      id int PK
-      form_id int FK
-      user_id int FK
-      status_id int FK
+      id UUID PK
+      form_id UUID FK
+      user_id UUID FK
+      status_id UUID FK
       data jsonb
       comment text
       created_at datetime
       submitted_at datetime
     }
     ATTACHMENT {
-      id int PK
-      application_id int FK
+      id UUID PK
+      application_id UUID FK
       filename varchar
       file_path varchar
       file_size int
       mime_type varchar
-      uploaded_by int FK
+      uploaded_by UUID FK
     }
     STATUS_HISTORY {
-      id int PK
-      application_id int FK
-      from_status_id int FK
-      to_status_id int FK
-      changed_by int FK
+      id UUID PK
+      application_id UUID FK
+      from_status_id UUID FK
+      to_status_id UUID FK
+      changed_by UUID FK
       changed_at datetime
       comment text
     }
@@ -317,8 +330,10 @@ User 1---* Application *---1 Form
        \       *---1 Status
         \      |
          \     *---* Attachment
-          \
-           *---* Form (creates)
+          \    |
+           \   *---* StatusHistory
+            \
+             *---* Form (admin creates forms)
 ```
 
 ---
