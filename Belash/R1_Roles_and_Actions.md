@@ -2,7 +2,7 @@
 
 Краткое описание
 
-MVP: Source, Article, Tag, Favorite, Report, User. UI отображает ленту новостей и избранное; API: /sources, /feed, /tags, /favorites, /reports. Приёмка (MVP): корректная модерация жалоб.
+MVP: Source, Article, Tag, Favorite, Report, User. UI отображает ленту новостей и избранное; API: /sources, /feed, /tags, /favorites, /reports. Приемка (MVP): корректная модерация жалоб.
 
 Роли и основные действия
 

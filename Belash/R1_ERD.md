@@ -62,9 +62,9 @@ erDiagram
 ```
 Source 1---* Article *---* Tag
                 |
-User 1---* Favorite *---1 Article
+User 1---* Favorite ---* Article
      \
-      \-*- Report ---*---1 Article
+      \---* Report ---* Article
 ```
 
 ## Минимальный SQL DDL (пример, PostgreSQL)

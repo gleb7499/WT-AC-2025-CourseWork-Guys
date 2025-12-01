@@ -121,8 +121,8 @@ API — верхнеуровневые ресурсы и операции
 
 Auth
 
-- POST `/auth/register` — `{email, password, name}` → `201 {id, email, name, role}`
-- POST `/auth/login` — `{email, password}` → `200 {accessToken, refreshToken, user}`
+- POST `/auth/register` — `{username, password}` → `201 {id, username, role}`
+- POST `/auth/login` — `{username, password}` → `200 {accessToken, refreshToken, user}`
 - POST `/auth/refresh` — `{refreshToken}` → `200 {accessToken}`
 
 Users
