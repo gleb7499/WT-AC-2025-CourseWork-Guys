@@ -75,7 +75,7 @@ erDiagram
 
 ## ASCII-эскиз
 
-```
+```text
 User 1---* Application *---1 Form
       \        |
        \       *---1 Status
