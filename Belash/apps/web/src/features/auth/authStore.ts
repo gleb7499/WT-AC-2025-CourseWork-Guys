@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { User, AuthResponse } from '../shared/types';
-import api from '../api/client';
+import { User, AuthResponse } from '../../shared/types';
+import api from '../../api/client';
 
 interface AuthState {
   user: User | null;

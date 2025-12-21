@@ -6,14 +6,14 @@
 - email: string, формат email, не пустое → ошибка: «Введите корректный email.»
 - password: string, минимум 6 символов, не пустое → ошибка: «Введите пароль (минимум 6 символов).»
 
-2. Карточка категории (Category)
+1. Карточка категории (Category)
 
 - id: UUID, автогенерируется
 - name: string, не пустое → ошибка: «Введите название категории.»
 - description: string, опционально
 - icon: string, опционально
 
-3. Карточка запроса помощи (HelpRequest)
+1. Карточка запроса помощи (HelpRequest)
 
 - id: UUID, автогенерируется
 - user_id: reference -> User.id, не пустое → ошибка: «Пользователь не определён.»
@@ -25,7 +25,7 @@
 - location_lng: number, опционально
 - location_address: string, не пустое → ошибка: «Укажите адрес или локацию.»
 
-4. Карточка профиля волонтёра (VolunteerProfile)
+1. Карточка профиля волонтёра (VolunteerProfile)
 
 - id: UUID, автогенерируется
 - user_id: reference -> User.id, не пустое → ошибка: «Пользователь не определён.»
@@ -36,7 +36,7 @@
 - location_lat: number, опционально
 - location_lng: number, опционально
 
-5. Карточка назначения (Assignment)
+1. Карточка назначения (Assignment)
 
 - id: UUID, автогенерируется
 - request_id: reference -> HelpRequest.id, не пустое → ошибка: «Запрос помощи не определён.»
@@ -45,7 +45,7 @@
 - assigned_at: datetime, автогенерируется
 - completed_at: datetime, опционально
 
-6. Карточка отзыва (Review)
+1. Карточка отзыва (Review)
 
 - id: UUID, автогенерируется
 - assignment_id: reference -> Assignment.id, не пустое → ошибка: «Назначение не определено.»
@@ -55,7 +55,7 @@
 - comment: string, опционально, максимум 1000 символов
 - created_at: datetime, автогенерируется
 
-7. Сообщение в чате (заглушка)
+1. Сообщение в чате (заглушка)
 
 - id: UUID, автогенерируется
 - assignment_id: reference -> Assignment.id, не пустое

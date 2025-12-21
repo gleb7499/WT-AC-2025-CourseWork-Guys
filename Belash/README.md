@@ -5,6 +5,7 @@
 ## Технологический стек
 
 ### Backend
+
 - Node.js + Express
 - TypeScript
 - Prisma ORM
@@ -15,6 +16,7 @@
 - Winston (логирование)
 
 ### Frontend
+
 - React 18
 - TypeScript
 - React Router
@@ -23,6 +25,7 @@
 - Vite
 
 ### DevOps
+
 - Docker + Docker Compose
 - pnpm (package manager)
 
@@ -62,33 +65,71 @@ Belash/
 ### Вариант 1: С Docker Compose (рекомендуется)
 
 1. Скопируйте `.env.example` в `.env`:
+
 ```bash
 cp .env.example .env
 ```
 
-2. Запустите проект:
+1. Запустите проект:
+
 ```bash
 docker-compose up
 ```
 
 Приложение будет доступно по адресам:
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:3000
+
+- Frontend: <http://localhost:5173>
+- Backend API: <http://localhost:3000>
+
+#### Управление контейнерами
+
+Остановить все контейнеры и удалить их:
+
+```bash
+docker-compose down
+```
+
+Остановить контейнеры без удаления (можно запустить снова командой `docker-compose start`):
+
+```bash
+docker-compose stop
+```
+
+Запустить контейнеры в фоновом режиме:
+
+```bash
+docker-compose up -d
+```
+
+Пересобрать и запустить контейнеры:
+
+```bash
+docker-compose up -d --build
+```
+
+Остановить с удалением volumes (база данных будет очищена):
+
+```bash
+docker-compose down -v
+```
 
 ### Вариант 2: Локальная разработка
 
 1. Установите зависимости:
+
 ```bash
 pnpm install
 ```
 
-2. Настройте переменные окружения:
+1. Настройте переменные окружения:
+
 ```bash
 cp .env.example .env
 # Отредактируйте .env файл
 ```
 
-3. Запустите PostgreSQL (или используйте Docker):
+1. Запустите PostgreSQL (или используйте Docker):
+
 ```bash
 docker run -d \
   --name postgres \
@@ -98,7 +139,8 @@ docker run -d \
   postgres:15-alpine
 ```
 
-4. Настройте базу данных:
+1. Настройте базу данных:
+
 ```bash
 cd apps/server
 pnpm db:generate
@@ -106,7 +148,8 @@ pnpm db:push
 pnpm db:seed
 ```
 
-5. Запустите сервер и клиент:
+1. Запустите сервер и клиент:
+
 ```bash
 # В корневой директории
 pnpm dev
@@ -125,6 +168,7 @@ pnpm dev
 ### Роли пользователей
 
 #### Пользователь (user)
+
 - Просмотр ленты новостей
 - Фильтрация по тегам и источникам
 - Просмотр детальной информации о статье
@@ -132,12 +176,14 @@ pnpm dev
 - Подача жалоб на статьи
 
 #### Модератор (moderator)
+
 - Все функции пользователя
 - Просмотр списка жалоб
 - Рассмотрение и закрытие жалоб
 - Удаление статей по жалобам
 
 #### Администратор (admin)
+
 - Все функции модератора
 - Управление пользователями (CRUD)
 - Управление источниками (CRUD)
@@ -146,11 +192,13 @@ pnpm dev
 ## API Endpoints
 
 ### Аутентификация
+
 - `POST /api/auth/register` - Регистрация
 - `POST /api/auth/login` - Вход
 - `POST /api/auth/refresh` - Обновление токена
 
 ### Пользователи
+
 - `GET /api/users` - Список пользователей (admin)
 - `GET /api/users/:id` - Получить пользователя
 - `POST /api/users` - Создать пользователя (admin)
@@ -158,6 +206,7 @@ pnpm dev
 - `DELETE /api/users/:id` - Удалить пользователя (admin)
 
 ### Источники
+
 - `GET /api/sources` - Список источников
 - `GET /api/sources/:id` - Получить источник
 - `POST /api/sources` - Создать источник (admin)
@@ -165,10 +214,12 @@ pnpm dev
 - `DELETE /api/sources/:id` - Удалить источник (admin)
 
 ### Лента новостей
+
 - `GET /api/feed` - Список статей (с фильтрами)
 - `GET /api/feed/:id` - Получить статью
 
 ### Теги
+
 - `GET /api/tags` - Список тегов
 - `GET /api/tags/:id` - Получить тег
 - `POST /api/tags` - Создать тег (admin)
@@ -176,11 +227,13 @@ pnpm dev
 - `DELETE /api/tags/:id` - Удалить тег (admin)
 
 ### Избранное
+
 - `GET /api/favorites` - Список избранного (user)
 - `POST /api/favorites` - Добавить в избранное (user)
 - `DELETE /api/favorites/:id` - Удалить из избранного (user)
 
 ### Жалобы
+
 - `GET /api/reports` - Список жалоб (admin/moderator)
 - `GET /api/reports/:id` - Получить жалобу
 - `POST /api/reports` - Создать жалобу (user)
@@ -189,11 +242,13 @@ pnpm dev
 ## Разработка
 
 ### Линтинг
+
 ```bash
 pnpm lint
 ```
 
 ### Форматирование
+
 ```bash
 pnpm format
 ```
@@ -201,12 +256,14 @@ pnpm format
 ### База данных
 
 #### Создание миграции
+
 ```bash
 cd apps/server
 pnpm prisma migrate dev --name migration_name
 ```
 
 #### Открыть Prisma Studio
+
 ```bash
 cd apps/server
 pnpm db:studio

@@ -29,6 +29,18 @@ app.use(express.urlencoded({ extended: true }));
 // Request logging
 app.use(requestLogger);
 
+// Root route
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'News Aggregator API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      api: '/api',
+    },
+  });
+});
+
 // Health check
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
