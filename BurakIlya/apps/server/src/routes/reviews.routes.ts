@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, IRouter } from 'express';
 import * as reviewsController from '../controllers/reviews.controller';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { createReviewSchema, updateReviewSchema } from '../schemas/review.schema';
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get('/', authenticate, reviewsController.listReviews);
 router.get('/:id', authenticate, reviewsController.getReviewById);

@@ -8,7 +8,7 @@ export function validate(schema: ZodSchema) {
 
       if (!result.success) {
         const error = result.error as ZodError;
-        return res.status(400).json({
+        res.status(400).json({
           status: 'error',
           error: {
             code: 'validation_error',
@@ -16,6 +16,7 @@ export function validate(schema: ZodSchema) {
             details: error.flatten().fieldErrors,
           },
         });
+        return;
       }
 
       req.body = result.data;

@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, IRouter } from 'express';
 import rateLimit from 'express-rate-limit';
 import * as authController from '../controllers/auth.controller';
 import { validate } from '../middleware/validate';
 import { registerSchema, loginSchema, refreshTokenSchema } from '../schemas/auth.schema';
 
-const router = Router();
+const router: IRouter = Router();
 
 // Rate limiter for auth endpoints
 const authLimiter = rateLimit({

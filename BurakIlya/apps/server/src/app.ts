@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { requestLogger } from './middleware/logger';
@@ -11,7 +11,7 @@ import volunteersRoutes from './routes/volunteers.routes';
 import assignmentsRoutes from './routes/assignments.routes';
 import reviewsRoutes from './routes/reviews.routes';
 
-const app = express();
+const app: Application = express();
 
 // Security middleware
 app.use(helmet());

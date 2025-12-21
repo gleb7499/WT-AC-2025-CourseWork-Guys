@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, IRouter } from 'express';
 import * as categoriesController from '../controllers/categories.controller';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { createCategorySchema, updateCategorySchema } from '../schemas/category.schema';
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get('/', categoriesController.listCategories);
 router.get('/:id', categoriesController.getCategoryById);

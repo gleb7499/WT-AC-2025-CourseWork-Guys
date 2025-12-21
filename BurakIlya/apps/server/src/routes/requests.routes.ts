@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, IRouter } from 'express';
 import * as requestsController from '../controllers/requests.controller';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { createRequestSchema, updateRequestSchema } from '../schemas/request.schema';
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get('/', authenticate, requestsController.listRequests);
 router.get('/:id', authenticate, requestsController.getRequestById);

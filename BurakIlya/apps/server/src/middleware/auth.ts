@@ -5,7 +5,7 @@ import { UnauthorizedError, ForbiddenError } from '../lib/errors';
 
 export function authenticate(
   req: AuthenticatedRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void {
   try {
@@ -31,7 +31,7 @@ export function authenticate(
 }
 
 export function authorize(...allowedRoles: string[]) {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
     if (!req.user) {
       return next(new UnauthorizedError('Authentication required'));
     }

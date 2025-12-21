@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, IRouter } from 'express';
 import * as assignmentsController from '../controllers/assignments.controller';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { createAssignmentSchema, updateAssignmentSchema } from '../schemas/assignment.schema';
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get('/', authenticate, assignmentsController.listAssignments);
 router.get('/:id', authenticate, assignmentsController.getAssignmentById);

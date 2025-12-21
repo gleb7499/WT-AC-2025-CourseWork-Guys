@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import prisma from '../lib/prisma';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../lib/jwt';
-import { UnauthorizedError, ConflictError, ValidationError } from '../lib/errors';
+import { UnauthorizedError, ConflictError } from '../lib/errors';
 
 interface RegisterInput {
   username: string;

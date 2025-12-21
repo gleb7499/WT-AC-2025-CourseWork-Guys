@@ -13,6 +13,10 @@ if (!JWT_REFRESH_SECRET) {
   throw new Error('JWT_REFRESH_SECRET environment variable is required');
 }
 
+// Assert non-null for TypeScript
+const accessSecret: string = JWT_ACCESS_SECRET;
+const refreshSecret: string = JWT_REFRESH_SECRET;
+
 const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN || '15m';
 const REFRESH_TOKEN_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
 
@@ -23,20 +27,23 @@ export interface TokenPayload {
 }
 
 export function generateAccessToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_ACCESS_SECRET, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return jwt.sign(payload, accessSecret as jwt.Secret, {
     expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-  });
+  } as any);
 }
 
 export function generateRefreshToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_REFRESH_SECRET, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return jwt.sign(payload, refreshSecret as jwt.Secret, {
     expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-  });
+  } as any);
 }
 
 export function verifyAccessToken(token: string): TokenPayload {
   try {
-    return jwt.verify(token, JWT_ACCESS_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, accessSecret as jwt.Secret);
+    return decoded as TokenPayload;
   } catch (error) {
     throw new UnauthorizedError('Invalid or expired access token');
   }
@@ -44,7 +51,8 @@ export function verifyAccessToken(token: string): TokenPayload {
 
 export function verifyRefreshToken(token: string): TokenPayload {
   try {
-    return jwt.verify(token, JWT_REFRESH_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, refreshSecret as jwt.Secret);
+    return decoded as TokenPayload;
   } catch (error) {
     throw new UnauthorizedError('Invalid or expired refresh token');
   }
