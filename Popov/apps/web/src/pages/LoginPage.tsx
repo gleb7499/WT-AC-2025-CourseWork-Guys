@@ -107,14 +107,16 @@ export function LoginPage() {
           Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
         </p>
 
-        <div className="demo-accounts">
-          <h3>Тестовые аккаунты:</h3>
-          <ul>
-            <li><strong>Администратор:</strong> admin@example.com / Admin123!</li>
-            <li><strong>Преподаватель:</strong> teacher@example.com / Teacher123!</li>
-            <li><strong>Студент:</strong> student@example.com / Student123!</li>
-          </ul>
-        </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className="demo-accounts">
+            <h3>Тестовые аккаунты (только для разработки):</h3>
+            <ul>
+              <li><strong>Администратор:</strong> admin@example.com / Admin123!</li>
+              <li><strong>Преподаватель:</strong> teacher@example.com / Teacher123!</li>
+              <li><strong>Студент:</strong> student@example.com / Student123!</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

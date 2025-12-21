@@ -4,6 +4,8 @@ import { UnauthorizedError } from './errors.js';
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
+// Validate JWT secrets exist and meet minimum length requirements
+// For production, consider using base64-encoded secrets or a key management service
 if (!ACCESS_SECRET || ACCESS_SECRET.length < 32) {
   throw new Error('JWT_ACCESS_SECRET environment variable is required and must be at least 32 characters');
 }

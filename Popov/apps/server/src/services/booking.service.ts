@@ -252,9 +252,16 @@ export async function updateBooking(
   userRole: Role,
   data: UpdateBookingData
 ) {
-  // Check if booking exists
+  // Check if booking exists and get owner info
   const existingBooking = await prisma.booking.findUnique({
     where: { id },
+    include: {
+      user: {
+        select: {
+          role: true,
+        },
+      },
+    },
   });
 
   if (!existingBooking) {
@@ -274,10 +281,8 @@ export async function updateBooking(
     throw new ValidationError('End time must be after start time');
   }
 
-  // Validate time limit
-  const ownerRole = userRole === Role.ADMIN ? existingBooking.userId : userRole;
-  const owner = await prisma.user.findUnique({ where: { id: existingBooking.userId } });
-  validateTimeLimit(startTime, endTime, owner?.role || Role.STUDENT);
+  // Validate time limit based on booking owner's role
+  validateTimeLimit(startTime, endTime, existingBooking.user.role);
 
   // Check for conflicts if time is being changed
   if (data.startTime || data.endTime) {
