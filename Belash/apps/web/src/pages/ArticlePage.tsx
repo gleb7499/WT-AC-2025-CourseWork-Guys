@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { Article } from '../shared/types';
 import { useAuthStore } from '../features/auth/authStore';

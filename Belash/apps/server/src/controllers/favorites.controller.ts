@@ -42,7 +42,7 @@ export async function getFavorites(req: AuthRequest, res: Response) {
 
     const total = await prisma.favorite.count({ where: { userId } });
 
-    const formattedFavorites = favorites.map((fav) => ({
+    const formattedFavorites = favorites.map((fav: typeof favorites[0]) => ({
       id: fav.id,
       createdAt: fav.createdAt,
       article: {
@@ -52,7 +52,7 @@ export async function getFavorites(req: AuthRequest, res: Response) {
         url: fav.article.url,
         publishedAt: fav.article.publishedAt,
         source: fav.article.source,
-        tags: fav.article.tags.map((at) => at.tag),
+        tags: fav.article.tags.map((at: typeof fav.article.tags[0]) => at.tag),
       },
     }));
 

@@ -3,18 +3,19 @@ import { verifyAccessToken } from '../lib/jwt';
 import { AuthRequest } from '../types';
 import logger from '../lib/logger';
 
-export function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
+export function authenticate(req: AuthRequest, res: Response, next: NextFunction): void {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
+      res.status(401).json({
         status: 'error',
         error: {
           code: 'unauthorized',
           message: 'Authentication required',
         },
       });
+      return;
     }
 
     const token = authHeader.substring(7);
@@ -24,7 +25,7 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
     next();
   } catch (error) {
     logger.error('Authentication error:', error);
-    return res.status(401).json({
+    res.status(401).json({
       status: 'error',
       error: {
         code: 'invalid_token',
@@ -35,25 +36,27 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
 }
 
 export function authorize(...roles: string[]) {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
-      return res.status(401).json({
+      res.status(401).json({
         status: 'error',
         error: {
           code: 'unauthorized',
           message: 'Authentication required',
         },
       });
+      return;
     }
 
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
+      res.status(403).json({
         status: 'error',
         error: {
           code: 'forbidden',
           message: 'You do not have permission to perform this action',
         },
       });
+      return;
     }
 
     next();

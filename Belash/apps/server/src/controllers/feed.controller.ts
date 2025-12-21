@@ -56,14 +56,14 @@ export async function getFeed(req: Request, res: Response) {
 
     const total = await prisma.article.count({ where });
 
-    const formattedArticles = articles.map((article) => ({
+    const formattedArticles = articles.map((article: typeof articles[0]) => ({
       id: article.id,
       title: article.title,
       content: article.content,
       url: article.url,
       publishedAt: article.publishedAt,
       source: article.source,
-      tags: article.tags.map((at) => at.tag),
+      tags: article.tags.map((at: typeof article.tags[0]) => at.tag),
       favoritesCount: article._count.favorites,
       reportsCount: article._count.reports,
     }));
@@ -141,7 +141,7 @@ export async function getArticle(req: Request, res: Response) {
       url: article.url,
       publishedAt: article.publishedAt,
       source: article.source,
-      tags: article.tags.map((at) => at.tag),
+      tags: article.tags.map((at: typeof article.tags[0]) => at.tag),
       favoritesCount: article._count.favorites,
       reportsCount: article._count.reports,
     };

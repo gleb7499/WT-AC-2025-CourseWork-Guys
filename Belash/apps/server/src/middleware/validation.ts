@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 
 export function validate(schema: ZodSchema) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       schema.parse(req.body);
       next();
@@ -14,7 +14,7 @@ export function validate(schema: ZodSchema) {
           fields[path] = err.message;
         });
 
-        return res.status(400).json({
+        res.status(400).json({
           status: 'error',
           error: {
             code: 'validation_failed',
@@ -22,6 +22,7 @@ export function validate(schema: ZodSchema) {
             fields,
           },
         });
+        return;
       }
 
       next(error);
