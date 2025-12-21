@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  username     String    @unique
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         Role      @default(STUDENT)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  
+  bookings     Booking[]
+
+  @@map("users")
+}
+
+model Room {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  capacity    Int
+  equipment   String?
+  location    String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  
+  bookings    Booking[]
+
+  @@map("rooms")
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  roomId    String        @map("room_id")
+  userId    String        @map("user_id")
+  startTime DateTime      @map("start_time")
+  endTime   DateTime      @map("end_time")
+  purpose   String
+  status    BookingStatus @default(ACTIVE)
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  
+  room      Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, startTime, endTime])
+  @@index([userId])
+  @@map("bookings")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum BookingStatus {
+  ACTIVE
+  CANCELLED
+}
