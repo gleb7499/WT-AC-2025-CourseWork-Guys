@@ -1,61 +1,41 @@
-# Frontend
+# Frontend (SPA)
 
-## Стек
+React + TypeScript + Vite. Использует backend как единственный источник правды.
 
-- React 18 + TypeScript
-- Vite 5
-- React Router DOM (роутинг)
-- React Hook Form + Zod (валидация форм)
+## Запуск
 
-## Настройка окружения
+Из корня репо:
 
-1) Скопировать `.env.example` в `.env` и задать переменные:
+```bash
+npm install
+npm run dev -w frontend
+```
 
+Переменные окружения (apps/frontend/.env):
 ```
 VITE_API_URL=http://localhost:4000
 ```
 
-## Установка зависимостей
+## Функциональность
+- Login / Register (JWT в памяти, Context)
+- Запросы помощи: список, создание, редактирование, удаление (права: владелец или admin)
+- Категории: CRUD только admin
+- Волонтёры: создание профиля, редактирование/удаление своего; admin может любого
+- Назначения: отклик волонтёра, назначение admin, смена статуса, удаление admin
+- Отзывы: создание после completed Assignment, редактирование/удаление автором или admin
+- Учитываются роли: скрытие недоступных действий, сообщения об ошибках от backend
+- Состояния loading / error / empty для списков
 
-Из корня репо (workspace):
+## Тестовые пользователи (seed backend)
+- admin@example.com / admin123
+- user@example.com / user12345
+- volunteer@example.com / volunteer123
 
-```
-npm install
-```
+## Навигация
+- /login, /register
+- /requests (главный экран)
+- /categories, /volunteers, /assignments, /reviews
 
-## Запуск dev-сервера
-
-Из корня репо:
-
-```
-npm run dev -w frontend
-```
-
-Frontend будет доступен на `http://localhost:5173`
-
-## Сборка production
-
-```
-npm run build -w frontend
-```
-
-## Структура
-
-- `/login` — вход
-- `/register` — регистрация
-- `/` — список запросов помощи
-- `/requests/new` — создать запрос
-- `/requests/:id` — детали запроса и отклик волонтёра
-- `/volunteer` — профиль волонтёра (создание/просмотр)
-- `/assignments` — мои назначения (волонтёр)
-
-## Тестовые пользователи (после seed)
-
-- admin: <admin@example.com> / admin123
-- user: <user@example.com> / user12345
-- volunteer: <volunteer@example.com> / volunteer123
-
-## Требования
-
-- Backend должен быть запущен на `http://localhost:4000`
-- В БД должны быть seed-данные (категории)
+## Примечания
+- Токен хранится в памяти (context), после перезагрузки нужно войти снова.
+- Все запросы идут на backend, права проверяются сервером.

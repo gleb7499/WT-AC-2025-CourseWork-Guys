@@ -1,76 +1,88 @@
-export interface User {
+export type Role = "admin" | "user";
+
+export type User = {
   id: string;
   email: string;
   username: string;
-  role: "admin" | "user";
-}
+  role: Role;
+};
 
-export interface ApiResponse<T> {
-  status: "ok" | "error";
-  data?: T;
-  error?: {
-    message: string;
-    code: string;
-    fields?: Record<string, string[]>;
-  };
-}
-
-export interface Category {
+export type Category = {
   id: string;
   name: string;
-  description?: string;
-  icon?: string;
-}
+  description?: string | null;
+  icon?: string | null;
+};
 
-export interface HelpRequest {
+export type HelpRequestStatus = "new" | "assigned" | "in_progress" | "completed" | "cancelled";
+
+export type AssignmentStatus = "assigned" | "in_progress" | "completed" | "cancelled";
+
+export type HelpRequest = {
   id: string;
   userId: string;
   categoryId: string;
   title: string;
   description: string;
-  status: "new" | "assigned" | "in_progress" | "completed" | "cancelled";
-  locationLat?: number;
-  locationLng?: number;
+  status: HelpRequestStatus;
   locationAddress: string;
-  createdAt: string;
-  updatedAt: string;
+  locationLat?: number | null;
+  locationLng?: number | null;
+  createdAt?: string;
+  updatedAt?: string;
   category?: Category;
-}
+  assignments?: Assignment[];
+};
 
-export interface VolunteerProfile {
+export type VolunteerProfile = {
   id: string;
   userId: string;
-  bio?: string;
+  bio?: string | null;
   rating: number;
   totalHelps: number;
-  locationLat?: number;
-  locationLng?: number;
-  user?: { id: string; email: string; username: string };
-}
+  locationLat?: number | null;
+  locationLng?: number | null;
+  user?: Pick<User, "id" | "email" | "username">;
+};
 
-export interface Assignment {
+export type Assignment = {
   id: string;
   requestId: string;
   volunteerId: string;
-  status: "assigned" | "in_progress" | "completed" | "cancelled";
-  assignedAt: string;
-  completedAt?: string;
+  status: AssignmentStatus;
+  assignedAt?: string;
+  completedAt?: string | null;
   request?: HelpRequest;
-}
+};
 
-export interface Review {
+export type Review = {
   id: string;
   assignmentId: string;
   userId: string;
   volunteerId: string;
   rating: number;
-  comment?: string;
-  createdAt: string;
-}
+  comment?: string | null;
+  createdAt?: string;
+};
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  limit: number;
-  offset: number;
+export type ApiErrorPayload = {
+  message: string;
+  code?: string;
+  fields?: Record<string, string[]>;
+};
+
+export type ApiErrorResponse = {
+  status: "error";
+  error: ApiErrorPayload;
+};
+
+export type ApiOkResponse<T> = {
+  status: "ok";
+  data: T;
+};
+
+export type ApiResponse<T> = ApiOkResponse<T> | ApiErrorResponse;
+
+export function isApiError<T>(resp: ApiResponse<T>): resp is ApiErrorResponse {
+  return resp.status === "error";
 }

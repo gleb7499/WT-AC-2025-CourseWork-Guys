@@ -1,80 +1,61 @@
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../contexts/AuthContext";
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ApiError } from "../lib/api";
+import { useState } from "react";
 
-const loginSchema = z.object({
-  email: z.string().email("Введите корректный email"),
-  password: z.string().min(6, "Минимум 6 символов")
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6)
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
-
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, loading, error } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
+    formState: { errors }
+  } = useForm<{ email: string; password: string }>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (data: LoginForm) => {
-    setError(null);
+  const onSubmit = async (values: { email: string; password: string }) => {
+    setFormError(null);
     try {
-      await login(data.email, data.password);
-      navigate("/");
+      await login(values.email, values.password);
+      navigate("/requests");
     } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-      } else {
-        setError("Произошла ошибка");
-      }
+      setFormError(err instanceof Error ? err.message : "Не удалось войти");
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "50px auto", padding: 24 }}>
-      <h1>Вход</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ marginBottom: 16 }}>
+    <div className="auth-page">
+      <div className="card" style={{ maxWidth: 420, margin: "40px auto" }}>
+        <h2>Вход</h2>
+        <p className="muted">Используйте данные из seed или созданный аккаунт.</p>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <label>
             Email
-            <input
-              type="email"
-              {...register("email")}
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-            />
+            <input type="email" placeholder="user@example.com" {...register("email")} />
+            {errors.email && <span className="error">{errors.email.message}</span>}
           </label>
-          {errors.email && <p style={{ color: "red", fontSize: 14 }}>{errors.email.message}</p>}
-        </div>
-        <div style={{ marginBottom: 16 }}>
           <label>
             Пароль
-            <input
-              type="password"
-              {...register("password")}
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-            />
+            <input type="password" placeholder="Пароль" {...register("password")} />
+            {errors.password && <span className="error">{errors.password.message}</span>}
           </label>
-          {errors.password && (
-            <p style={{ color: "red", fontSize: 14 }}>{errors.password.message}</p>
-          )}
-        </div>
-        {error && (
-          <p style={{ color: "red", marginBottom: 16 }}>{error}</p>
-        )}
-        <button type="submit" disabled={isSubmitting} style={{ padding: "8px 16px" }}>
-          {isSubmitting ? "Загрузка..." : "Войти"}
-        </button>
-        <p style={{ marginTop: 16 }}>
-          Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
+          {formError || error ? <div className="error">{formError || error}</div> : null}
+          <button className="btn primary" type="submit" disabled={loading}>
+            {loading ? "Входим..." : "Войти"}
+          </button>
+        </form>
+        <p className="muted" style={{ marginTop: 12 }}>
+          Нет аккаунта? <Link to="/register">Регистрация</Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }

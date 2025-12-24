@@ -49,9 +49,10 @@ npm run prisma:seed -w backend
 ```
 
 Что создаётся:
-- admin: admin@example.com / admin123
-- user: user@example.com / user12345
-- volunteer: volunteer@example.com / volunteer123 (есть VolunteerProfile)
+
+- admin: <admin@example.com> / admin123
+- user: <user@example.com> / user12345
+- volunteer: <volunteer@example.com> / volunteer123 (есть VolunteerProfile)
 - Категории: Продукты, Медицина
 - Запросы: один new (для отклика), один completed с отзывом
 
