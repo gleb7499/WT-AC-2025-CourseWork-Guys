@@ -32,7 +32,11 @@ SPA + API для сервиса волонтёрской помощи. Роли:
 npm install
 ```
 
-2) Скопировать `.env.example` → `.env` в корне (VITE_API_URL) и в `apps/backend/.env` указать `DATABASE_URL`, `JWT_SECRET`, `PORT` (см. backend/README).
+1) Переменные окружения (раздельно):
+ - Backend: скопировать `apps/backend/.env.example` → `apps/backend/.env` и заполнить `DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `CORS_ORIGIN`, `PORT`, TTL.
+   - Для проверки ротации можно временно поставить `JWT_ACCESS_TTL=30s`, `JWT_REFRESH_TTL=30d`.
+ - Frontend: скопировать `apps/frontend/.env.example` → `apps/frontend/.env`, задать `VITE_API_URL` (например, `http://localhost:4000`).
+
 2) Применить миграции и seed (из корня):
 
 ```bash
@@ -40,13 +44,14 @@ npm run prisma:migrate -w backend
 npm run prisma:seed -w backend
 ```
 
-4) Запустить dev-сервера в монорепо:
+1) Запустить dev-сервера одной командой (конкурентно frontend+backend):
 
 ```bash
 npm run dev
 ```
 
-Backend: <http://localhost:4000> · Frontend: <http://localhost:5173>
+ - Backend: <http://localhost:4000>
+ - Frontend: <http://localhost:5173>
 
 ## Тестовые учётки (seed)
 
@@ -56,9 +61,16 @@ Backend: <http://localhost:4000> · Frontend: <http://localhost:5173>
 
 ## Как тестировать сценарии
 
-1) Войти под admin → создать/редактировать категории, просмотреть все запросы.
-2) Войти под user → создать запрос помощи → убедиться, что удалить можно только пока status=new.
-3) Войти под volunteer → откликнуться на запрос со статусом `new` → сменить статус назначения → вернуться под user и оставить отзыв после `completed`.
-4) Проверить, что недоступные действия (например, создание категории под user) возвращают ошибку `Forbidden` и UI показывает сообщение.
+1) Регистрация/вход: создать нового user либо воспользоваться seed-аккаунтами.
+2) Ротация refresh:
+ - В dev можно временно установить `JWT_ACCESS_TTL=30s` и перезапустить backend.
+ - Залогиниться, выполнить защищённый запрос (например, список запросов).
+ - Подождать истечения access (30–40s), выполнить тот же запрос: frontend должен один раз вызвать `POST /auth/refresh` с cookie (видно в network), получить новый access и повторить запрос успешно.
+3) Logout: нажать «Выйти» в UI → проверить, что refresh cookie очищена (Set-Cookie с Max-Age=0) и повторный `POST /auth/refresh` даёт 401.
+4) Основной пользовательский сценарий:
+ - admin: создать/редактировать категории, просмотреть все запросы.
+ - user: создать запрос помощи → убедиться, что удалить можно только пока status=new.
+ - volunteer: откликнуться на запрос со статусом `new` → сменить статус назначения → вернуться под user и оставить отзыв после `completed`.
+5) Проверить, что недоступные действия (например, создание категории под user) возвращают `Forbidden` и UI показывает сообщение.
 
 Полные детали API и примеры curl смотрите в [apps/backend/README.md](apps/backend/README.md), UI сценарии — в [apps/frontend/README.md](apps/frontend/README.md).

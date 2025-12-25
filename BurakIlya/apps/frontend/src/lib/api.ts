@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
 import type {
   ApiResponse,
   User,
@@ -13,14 +13,30 @@ import type {
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
+type AuthAxiosRequestConfig = AxiosRequestConfig & { _retry?: boolean; _skipAuthRefresh?: boolean };
+
 let accessToken: string | null = null;
+let accessTokenListener: ((token: string | null) => void) | null = null;
+let refreshPromise: Promise<string | null> | null = null;
 
 export function setAccessToken(token: string | null) {
   accessToken = token;
+  accessTokenListener?.(token);
+}
+
+export function setAccessTokenListener(listener: ((token: string | null) => void) | null) {
+  accessTokenListener = listener;
 }
 
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
+  headers: { "Content-Type": "application/json" }
+});
+
+const plainApi = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
   headers: { "Content-Type": "application/json" }
 });
 
@@ -31,6 +47,59 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+function requiresAuth(url?: string) {
+  if (!url) return true;
+  const pathname = new URL(url, API_URL).pathname;
+  return !["/auth/login", "/auth/register", "/auth/refresh", "/health"].some((path) => pathname.startsWith(path));
+}
+
+export async function refreshAccessToken() {
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = plainApi
+    .post("/auth/refresh", {}, { _skipAuthRefresh: true } as AuthAxiosRequestConfig)
+    .then(({ data }) => {
+      if (data.status !== "ok") {
+        throw new Error(data.error?.message || "Refresh failed");
+      }
+      const token = (data.data as { accessToken: string }).accessToken;
+      setAccessToken(token);
+      return token;
+    })
+    .catch((err) => {
+      setAccessToken(null);
+      throw err;
+    })
+    .finally(() => {
+      refreshPromise = null;
+    });
+
+  return refreshPromise;
+}
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const status = error.response?.status;
+    const originalRequest = error.config as AuthAxiosRequestConfig | undefined;
+
+    if (status === 401 && originalRequest && !originalRequest._retry && !originalRequest._skipAuthRefresh && requiresAuth(originalRequest.url)) {
+      originalRequest._retry = true;
+      try {
+        const newToken = await refreshAccessToken();
+        if (newToken && originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        }
+        return api.request(originalRequest);
+      } catch (refreshError) {
+        setAccessToken(null);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 async function request<T>(promise: Promise<{ data: ApiResponse<T> }>): Promise<T> {
   const { data } = await promise;
@@ -50,6 +119,10 @@ export function login(email: string, password: string) {
 
 export function register(payload: { email: string; username: string; password: string }) {
   return request<{ user: User; accessToken: string }>(api.post("/auth/register", payload));
+}
+
+export function logout() {
+  return request<{ message: string }>(api.post("/auth/logout", {}));
 }
 
 export function getMe() {

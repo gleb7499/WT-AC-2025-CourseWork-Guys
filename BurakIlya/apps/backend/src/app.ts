@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
 import categoriesRouter from "./routes/categories";
@@ -14,8 +15,15 @@ export function createApp() {
   const app = express();
 
   app.use(helmet());
-  app.use(cors());
+  const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+  app.use(
+    cors({
+      origin: allowedOrigin.split(",").map((o) => o.trim()),
+      credentials: true
+    })
+  );
   app.use(express.json());
+  app.use(cookieParser());
 
   app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok" });

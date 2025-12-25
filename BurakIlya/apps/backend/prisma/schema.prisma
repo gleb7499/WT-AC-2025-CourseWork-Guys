@@ -40,6 +40,7 @@ model User {
   assignments     Assignment[]      @relation("UserAssignments")
   reviewsLeft     Review[]          @relation("UserReviews")
   reviewsReceived Review[]          @relation("VolunteerReviews")
+  refreshTokens   RefreshToken[]
 }
 
 model Category {
@@ -110,4 +111,18 @@ model Review {
   volunteer  User       @relation("VolunteerReviews", fields: [volunteerId], references: [id])
 
   @@index([volunteerId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  jtiHash   String   @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }

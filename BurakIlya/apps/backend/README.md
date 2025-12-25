@@ -4,7 +4,7 @@
 
 - Node.js + Express + TypeScript
 - PostgreSQL + Prisma
-- Auth: JWT (access token), bcrypt
+- Auth: JWT (короткий access + долгий refresh в HttpOnly cookie с ротацией), bcrypt
 - Валидация: Zod
 - Без Docker
 
@@ -14,8 +14,12 @@
 
 ```
 PORT=4000
-JWT_SECRET=change-me
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB?schema=public
+CORS_ORIGIN=http://localhost:5173
+JWT_ACCESS_SECRET=change-access
+JWT_REFRESH_SECRET=change-refresh
+JWT_ACCESS_TTL=15m
+JWT_REFRESH_TTL=30d
 ```
 
 ## Установка зависимостей
@@ -75,25 +79,33 @@ npm run start -w backend
 
 - Healthcheck: `GET http://localhost:4000/health`
 - Auth:
-  - POST `/auth/register` { email, username, password }
-  - POST `/auth/login` { email, password }
-  - GET `/users/me` c заголовком `Authorization: Bearer <token>`
+  - POST `/auth/register` { email, username, password } → выдаёт access + ставит refresh cookie (HttpOnly)
+  - POST `/auth/login` { email, password } → выдаёт access + ставит refresh cookie (HttpOnly)
+  - POST `/auth/refresh` без тела (cookie обязателен) → новый access + новый refresh cookie (ротация)
+  - POST `/auth/logout` → отзывает текущий refresh, чистит cookie
+  - GET `/users/me` c заголовком `Authorization: Bearer <ACCESS_TOKEN>`
 
 ## Примеры curl
 
-### Логин (получить токен)
+### Auth: логин, refresh, logout (PowerShell)
 
-```bash
-curl -X POST http://localhost:4000/auth/login \
-  -H "Content-Type: application/json" \
+```powershell
+$API="http://localhost:4000"
+
+# Логин: получаем access в ответе и сохраняем refresh cookie в cookies.txt
+curl.exe -i -c cookies.txt -X POST "$API/auth/login" `
+  -H "Content-Type: application/json" `
   -d '{"email":"user@example.com","password":"user12345"}'
-```
 
-### Запрос защищённого ресурса (текущий пользователь)
+# Запрос защищенного ресурса (передаем access в заголовке)
+curl.exe -i -b cookies.txt "$API/users/me" `
+  -H "Authorization: Bearer <ACCESS_TOKEN_FROM_LOGIN>"
 
-```bash
-curl http://localhost:4000/users/me \
-  -H "Authorization: Bearer <ACCESS_TOKEN>"
+# Обновить access по refresh cookie (refresh ротируется)
+curl.exe -i -b cookies.txt -X POST "$API/auth/refresh"
+
+# Logout: отзывает текущий refresh и чистит cookie
+curl.exe -i -b cookies.txt -X POST "$API/auth/logout"
 ```
 
 ### Отказ в доступе (попытка создать категорию без прав admin)
