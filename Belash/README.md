@@ -1,6 +1,6 @@
-# News Aggregator "Без фейков"
+# News Aggregator "Без фейков" (Вариант 37)
 
-Агрегатор новостей с системой модерации жалоб. Курсовой проект по дисциплине «Веб-Технологии».
+Агрегатор новостей с системой модерации жалоб. Курсовой проект по дисциплине «Веб-Технологии». Требования и материалы варианта 37 см. в каталоге `task_01/`.
 
 ## Технологический стек
 
@@ -29,131 +29,52 @@
 - Docker + Docker Compose
 - pnpm (package manager)
 
-## Структура проекта
-
-```
-Belash/
-├── apps/
-│   ├── server/          # Backend API
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   ├── middleware/
-│   │   │   ├── lib/
-│   │   │   └── types/
-│   │   └── prisma/      # Схема БД и миграции
-│   └── web/             # Frontend SPA
-│       └── src/
-│           ├── pages/
-│           ├── components/
-│           ├── features/
-│           ├── api/
-│           └── shared/
-├── task_01/             # Документация проекта
-├── docker-compose.yml
-└── .env.example
-```
-
 ## Требования
 
 - Node.js >= 18
 - pnpm >= 8
-- Docker и Docker Compose (для запуска с контейнерами)
+- PostgreSQL 15+ (локально, без Docker для приёмки)
 
 ## Быстрый старт
 
-### Вариант 1: С Docker Compose (рекомендуется)
+### Локальный запуск (для приёмки)
 
-1. Скопируйте `.env.example` в `.env`:
+1. Скопируйте переменные окружения и задайте собственные секреты:
 
 ```bash
 cp .env.example .env
+# Обязательно замените JWT_ACCESS_SECRET и JWT_REFRESH_SECRET на уникальные значения
 ```
 
-1. Запустите проект:
+2. Поднимите PostgreSQL локально (порт 5432) и создайте базу `news_aggregator`.
 
-```bash
-docker-compose up
-```
-
-Приложение будет доступно по адресам:
-
-- Frontend: <http://localhost:5173>
-- Backend API: <http://localhost:3000>
-
-#### Управление контейнерами
-
-Остановить все контейнеры и удалить их:
-
-```bash
-docker-compose down
-```
-
-Остановить контейнеры без удаления (можно запустить снова командой `docker-compose start`):
-
-```bash
-docker-compose stop
-```
-
-Запустить контейнеры в фоновом режиме:
-
-```bash
-docker-compose up -d
-```
-
-Пересобрать и запустить контейнеры:
-
-```bash
-docker-compose up -d --build
-```
-
-Остановить с удалением volumes (база данных будет очищена):
-
-```bash
-docker-compose down -v
-```
-
-### Вариант 2: Локальная разработка
-
-1. Установите зависимости:
+3. Установите зависимости в монорепо:
 
 ```bash
 pnpm install
 ```
 
-1. Настройте переменные окружения:
-
-```bash
-cp .env.example .env
-# Отредактируйте .env файл
-```
-
-1. Запустите PostgreSQL (или используйте Docker):
-
-```bash
-docker run -d \
-  --name postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=news_aggregator \
-  -p 5432:5432 \
-  postgres:15-alpine
-```
-
-1. Настройте базу данных:
+4. Примените Prisma схему и заполните тестовыми данными:
 
 ```bash
 cd apps/server
 pnpm db:generate
 pnpm db:push
 pnpm db:seed
+cd ../..
 ```
 
-1. Запустите сервер и клиент:
+5. Запустите фронтенд и бэкенд из корня одной командой:
 
 ```bash
-# В корневой директории
 pnpm dev
 ```
+
+Frontend: <http://localhost:5173>, Backend API: <http://localhost:3000>.
+
+### Docker Compose (опционально для локальной разработки)
+
+Команды из предыдущей версии сохранены в `docker-compose.yml`, но для приёмки используйте локальную БД.
 
 ## Учетные записи по умолчанию
 
@@ -162,6 +83,8 @@ pnpm dev
 - **Администратор**: `admin` / `admin123`
 - **Модератор**: `moderator` / `moderator123`
 - **Пользователь**: `user` / `user123`
+
+Auth-flow: access-токен возвращается в ответе, refresh-токен выдаётся и ротируется в HttpOnly cookie (`/api/auth/refresh`).
 
 ## Функциональность
 

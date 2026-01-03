@@ -4,6 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -31,24 +32,20 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (refreshToken) {
-          const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-            refreshToken,
-          });
+        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, undefined, {
+          withCredentials: true,
+        });
 
-          localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('accessToken', data.data.accessToken);
 
-          if (originalRequest.headers) {
-            originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`;
-          }
-
-          return api(originalRequest);
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`;
         }
+
+        return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed, clear tokens and redirect to login
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
         window.location.href = '/login';
         return Promise.reject(refreshError);

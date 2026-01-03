@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { requestLogger } from './middleware/logger';
 import { errorHandler } from './middleware/errorHandler';
 import authRoutes from './routes/auth.routes';
@@ -21,6 +22,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 
 // Body parsing
 app.use(express.json());

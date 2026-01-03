@@ -28,10 +28,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         password,
       });
 
-      const { accessToken, refreshToken, user } = response.data.data;
+      const { accessToken, user } = response.data.data;
 
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(user));
 
       set({ user, isAuthenticated: true, isLoading: false });
@@ -61,8 +60,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: () => {
+    api.post('/auth/logout').catch(() => {
+      // ignore network/logout errors; we still clear local state
+    });
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     set({ user: null, isAuthenticated: false });
   },
@@ -82,7 +83,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       } catch {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
       }
     }
   },
