@@ -1,0 +1,58 @@
+Для рисунка 3.2 – Структура серверной части:
+
+Создать дерево файлов и папок серверной части проекта (apps/server):
+
+```
+apps/server/
+├── src/
+│   ├── index.ts
+│   ├── routes/
+│   │   ├── auth.routes.ts
+│   │   ├── users.routes.ts
+│   │   ├── sources.routes.ts
+│   │   ├── feed.routes.ts
+│   │   ├── tags.routes.ts
+│   │   ├── favorites.routes.ts
+│   │   └── reports.routes.ts
+│   ├── controllers/
+│   │   ├── authController.ts
+│   │   ├── usersController.ts
+│   │   ├── sourcesController.ts
+│   │   ├── feedController.ts
+│   │   ├── tagsController.ts
+│   │   ├── favoritesController.ts
+│   │   └── reportsController.ts
+│   ├── services/
+│   │   ├── authService.ts
+│   │   ├── userService.ts
+│   │   ├── sourceService.ts
+│   │   ├── articleService.ts
+│   │   ├── tagService.ts
+│   │   ├── favoriteService.ts
+│   │   └── reportService.ts
+│   ├── middleware/
+│   │   ├── authenticate.ts
+│   │   ├── authorize.ts
+│   │   ├── validateRequest.ts
+│   │   └── errorHandler.ts
+│   ├── schemas/
+│   │   ├── authSchemas.ts
+│   │   ├── userSchemas.ts
+│   │   ├── sourceSchemas.ts
+│   │   └── ...
+│   ├── utils/
+│   │   ├── logger.ts
+│   │   ├── jwt.ts
+│   │   └── password.ts
+│   └── config/
+│       ├── env.ts
+│       └── database.ts
+├── prisma/
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.ts
+├── package.json
+└── tsconfig.json
+```
+
+Можно сделать скриншот файловой структуры из VS Code или создать визуальную схему в виде дерева папок.
