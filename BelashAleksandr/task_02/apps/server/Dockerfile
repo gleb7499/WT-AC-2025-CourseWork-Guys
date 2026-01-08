@@ -1,7 +1,8 @@
 FROM node:18-alpine AS base
 
-# Install pnpm
-RUN npm install -g pnpm
+# Install pnpm via Corepack (avoid npm, keep builds reproducible)
+RUN corepack enable \
+	&& corepack prepare pnpm@9.0.0 --activate
 
 # Build stage
 FROM base AS builder
@@ -12,22 +13,21 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 COPY apps/server/package.json ./apps/server/
 
 # Install dependencies
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copy source files
 COPY apps/server ./apps/server
 
 # Generate Prisma client and build (from root with workspace context)
-RUN pnpm --filter server db:generate
-RUN pnpm --filter server build
+RUN pnpm --filter server db:generate \
+	&& pnpm --filter server build
+
 # Compile seed file
-RUN cd apps/server && npx tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --resolveJsonModule --skipLibCheck
+WORKDIR /app/apps/server
+RUN pnpm exec tsc prisma/seed.ts --outDir dist/prisma --esModuleInterop --resolveJsonModule --skipLibCheck
 
 # Production stage
 FROM base AS runner
-
-# Install Prisma CLI globally
-RUN npm install -g prisma
 
 WORKDIR /app
 

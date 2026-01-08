@@ -21,15 +21,15 @@
 }
 
 .tab-btn.active {
-  color: #0066cc;
-  border-bottom-color: #0066cc;
+  color: #06c;
+  border-bottom-color: #06c;
 }
 
 .tab-content {
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
 }
 
 .management-section h2 {

@@ -39,36 +39,40 @@
 
 ### Локальный запуск (для приёмки)
 
-1. Скопируйте переменные окружения и задайте собственные секреты:
+1. Скопируйте переменные окружения для бэкенда и фронтенда:
 
-```bash
-cp .env.example .env
-# Обязательно замените JWT_ACCESS_SECRET и JWT_REFRESH_SECRET на уникальные значения
-```
+ ```bash
+ # Backend
+ cp apps/server/.env.example apps/server/.env
+ # Обязательно замените JWT_ACCESS_SECRET и JWT_REFRESH_SECRET на уникальные значения
+ 
+ # Frontend
+ cp apps/web/.env.example apps/web/.env
+ ```
 
-2. Поднимите PostgreSQL локально (порт 5432) и создайте базу `news_aggregator`.
+1. Поднимите PostgreSQL локально (порт 5432) и создайте базу `news_aggregator`.
 
-3. Установите зависимости в монорепо:
+1. Установите зависимости в монорепо:
 
-```bash
-pnpm install
-```
+ ```bash
+ pnpm install
+ ```
 
-4. Примените Prisma схему и заполните тестовыми данными:
+1. Примените Prisma схему и заполните тестовыми данными:
 
-```bash
-cd apps/server
-pnpm db:generate
-pnpm db:push
-pnpm db:seed
-cd ../..
-```
+ ```bash
+ cd apps/server
+ pnpm db:generate
+ pnpm db:push
+ pnpm db:seed
+ cd ../..
+ ```
 
-5. Запустите фронтенд и бэкенд из корня одной командой:
+1. Запустите фронтенд и бэкенд из корня одной командой:
 
-```bash
-pnpm dev
-```
+ ```bash
+ pnpm dev
+ ```
 
 Frontend: <http://localhost:5173>, Backend API: <http://localhost:3000>.
 

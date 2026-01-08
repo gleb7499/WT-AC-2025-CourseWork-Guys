@@ -1,7 +1,8 @@
 FROM node:18-alpine AS base
 
-# Install pnpm
-RUN npm install -g pnpm
+# Install pnpm via Corepack (avoid npm, keep builds reproducible)
+RUN corepack enable \
+	&& corepack prepare pnpm@9.0.0 --activate
 
 # Development stage
 FROM base AS development
@@ -12,7 +13,7 @@ COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 
 # Install dependencies
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copy source files
 COPY apps/web ./apps/web
