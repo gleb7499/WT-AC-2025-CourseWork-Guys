@@ -1,0 +1,21 @@
+Для рисунка 3.3 – Диаграмма сущностей и связей базы данных:
+Создать ERD (Entity Relationship Diagram) диаграмму, показывающую все таблицы базы данных и их связи:
+
+Таблицы для отображения:
+- users (id, username, password_hash, role, token_version, created_at, updated_at)
+- sources (id, name, url, description, created_at, updated_at)
+- articles (id, source_id, title, content, url, published_at, created_at, updated_at)
+- tags (id, name, created_at, updated_at)
+- article_tags (article_id, tag_id) - промежуточная таблица
+- favorites (id, user_id, article_id, created_at)
+- reports (id, user_id, article_id, reason, status, created_at, updated_at)
+
+Связи для отображения:
+- sources 1:N articles (один источник содержит много статей)
+- articles N:M tags через article_tags (многие-ко-многим)
+- users 1:N favorites (один пользователь имеет много избранных)
+- articles 1:N favorites (одна статья может быть в избранном у многих)
+- users 1:N reports (один пользователь может создать много жалоб)
+- articles 1:N reports (на одну статью может быть много жалоб)
+
+Можно использовать инструменты: dbdiagram.io, draw.io, или экспортировать диаграмму из Prisma Studio.
