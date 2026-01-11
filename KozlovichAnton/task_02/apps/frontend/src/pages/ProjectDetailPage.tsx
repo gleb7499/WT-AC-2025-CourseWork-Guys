@@ -33,7 +33,10 @@ const bugSchema = z.object({
   title: z.string().min(3),
   description: z.string().max(5000).optional(),
   priority: z.enum(["low", "medium", "high", "critical"]).default("medium"),
-  assignedTo: z.string().uuid().optional()
+  assignedTo: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().uuid().optional()
+  )
 });
 
 type ProjectUpdateForm = z.infer<typeof projectUpdateSchema>;
@@ -288,7 +291,9 @@ export const ProjectDetailPage: React.FC = () => {
 
             <label className="label">Описание</label>
             <textarea className="textarea" {...bugForm.register("description")} />
-            {bugForm.formState.errors.description && <span className="error">bugForm.formState.errors.description.message</span>}
+            {bugForm.formState.errors.description && (
+              <span className="error">{bugForm.formState.errors.description.message}</span>
+            )}
 
             <label className="label">Приоритет</label>
             <select className="select" {...bugForm.register("priority")}>
@@ -300,6 +305,9 @@ export const ProjectDetailPage: React.FC = () => {
 
             <label className="label">Назначить (userId, developer)</label>
             <input className="input" placeholder="опционально" {...bugForm.register("assignedTo")} />
+            {bugForm.formState.errors.assignedTo && (
+              <span className="error">Нужен UUID пользователя (developer)</span>
+            )}
 
             <button className="btn btn-primary" type="submit" disabled={savingBug}>
               {savingBug ? "Создаём..." : "Создать"}

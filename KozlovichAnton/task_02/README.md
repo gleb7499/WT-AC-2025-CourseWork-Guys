@@ -16,13 +16,12 @@ Full-stack монорепозиторий: React + Vite (frontend) и Express + 
 
 1. В корне: `npm install`
 2. Настройте окружения:
-
-- [apps/backend/.env.example](apps/backend/.env.example) → `.env` (DATABASE_URL, CORS_ORIGIN, JWT_*). Для быстрой проверки ротации можно временно установить `JWT_ACCESS_TTL=15s`.
-- [apps/frontend/.env.example](apps/frontend/.env.example) → `.env` (VITE_API_URL — URL backend, например <http://localhost:4000>)
+   - [apps/backend/.env.example](apps/backend/.env.example) → `.env` (DATABASE_URL, CORS_ORIGIN, JWT_*). Для быстрой проверки ротации можно временно установить `JWT_ACCESS_TTL=15s`.
+   - [apps/frontend/.env.example](apps/frontend/.env.example) → `.env` (VITE_API_URL — URL backend, например <http://localhost:4000>)
 
 3. Миграции: `npm run prisma:migrate:dev -w backend -- --name init`
-2. Seed: `npm run prisma:seed -w backend`
-3. Запуск обоих сервисов одной командой: `npm run dev`
+4. Seed: `npm run prisma:seed -w backend`
+5. Запуск обоих сервисов одной командой: `npm run dev`
 
 - Backend: <http://localhost:4000/health>
 - Frontend: <http://localhost:5173>
@@ -33,9 +32,9 @@ Full-stack монорепозиторий: React + Vite (frontend) и Express + 
 2. Login → в шапке видно текущего пользователя.
 3. Проверка ротации access:
 
-- Установите в backend `.env` `JWT_ACCESS_TTL=15s`, перезапустите backend.
-- Подождите 15–20 секунд, выполните действие (например, обновить список проектов). Клиент получит 401, сделает `POST /auth/refresh` с cookie, повторит запрос и останется авторизован.
-- После Logout refresh cookie очищается; повторный `/auth/refresh` вернёт 401, клиент разлогинится.
+   - Установите в backend `.env` `JWT_ACCESS_TTL=15s`, перезапустите backend.
+   - Подождите 15–20 секунд, выполните действие (например, обновить список проектов). Клиент получит 401, сделает `POST /auth/refresh` с cookie, повторит запрос и останется авторизован.
+   - После Logout refresh cookie очищается; повторный `/auth/refresh` вернёт 401, клиент разлогинится.
 
 4. Основной сценарий: создать проект (admin), открыть проект, создать баг, сменить статус, добавить комментарий/вложение.
 

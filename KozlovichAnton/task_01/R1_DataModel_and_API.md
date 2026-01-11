@@ -120,12 +120,12 @@ API — верхнеуровневые ресурсы и операции
   - Видны всем пользователям
   - Баги публичных проектов видны всем пользователям
   - Создавать баги могут все авторизованные пользователи
-  
+
 - **Приватные проекты** (Project.is_public = false):
   - Видны только участникам (ProjectMember) и администраторам
   - Баги приватных проектов видны только участникам проекта и администраторам
   - Создавать/редактировать баги могут только участники проекта
-  
+
 - **Права участников проекта** (ProjectMember.role):
   - **owner**: полный доступ (редактирование проекта, управление участниками, все операции с багами)
   - **manager**: управление багами (CRUD, назначение, изменение приоритетов/статусов)
@@ -139,11 +139,11 @@ API — верхнеуровневые ресурсы и операции
   - Разрешённые типы: image/*, application/pdf, text/plain, text/csv
   - Хранение: локальная файловая система (папка `uploads/`)
   - Скачивание: GET /attachments/{id}/download
-  
+
 - Rate limiting:
   - Auth endpoints (/auth/login, /auth/register): 5 запросов в минуту на IP
   - Остальные endpoints: 100 запросов в минуту на пользователя
-  
+
 - Валидация:
   - Все пользовательские вводы валидируются через Zod
   - HTML в комментариях санитизируется (защита от XSS)
@@ -154,6 +154,7 @@ API — верхнеуровневые ресурсы и операции
 - Документация API (OpenAPI/Swagger)
 - Тесты: unit + интеграционные для фильтров и доски
 - История изменений багов (BugAuditLog) - отложено на будущее
+
 ---
 
 ## Подробные операции API, схемы и поведение
@@ -202,30 +203,30 @@ Projects
 - GET `/projects?ownerId=&isPublic=&limit=&offset=` — список проектов
   - Admin: видит все проекты
   - Остальные: публичные проекты + проекты, где они участники (ProjectMember)
-  
+
 - POST `/projects` — Admin (создание проекта)
   - Payload: `{name, description, ownerId?, isPublic?}`
   - ownerId по умолчанию: текущий пользователь
   - isPublic по умолчанию: false
   - Автоматически создаётся ProjectMember с ролью 'owner' для владельца
-  
+
 - GET `/projects/{id}` — детали проекта с кратким списком багов
   - Доступ: Admin, участники проекта (ProjectMember), или публичный проект
-  
+
 - PUT `/projects/{id}` — Admin или owner проекта
-  
+
 - DELETE `/projects/{id}` — Admin
   - Каскадно удаляются все баги, комментарии, вложения, ProjectMember
 
 - GET `/projects/{id}/members` — список участников проекта
   - Доступ: Admin, участники проекта
   - Response: `200 [{userId, username, email, role, joinedAt}]`
-  
+
 - POST `/projects/{id}/members` — добавить участника
   - Доступ: Admin, owner или manager проекта
   - Payload: `{userId, role}`
   - Role: 'manager' | 'developer' | 'viewer'
-  
+
 - DELETE `/projects/{id}/members/{userId}` — удалить участника
   - Доступ: Admin, owner проекта
   - Нельзя удалить owner'а проекта
@@ -234,31 +235,31 @@ Bugs
 
 - GET `/bugs?projectId=&status=&priority=&assignedTo=&createdBy=&limit=&offset=` — список с фильтрами
   - Доступ: Admin видит все; остальные видят баги публичных проектов + проектов, где они участники
-  
+
 - POST `/bugs` — создание бага
   - Доступ: Admin, участники проекта (ProjectMember), или пользователи для публичных проектов
   - Payload: `{projectId, title, description, priority?, status?}`
   - Status по умолчанию: 'new'
   - Priority по умолчанию: 'medium'
   - created_by автоматически устанавливается из JWT
-  
+
 - GET `/bugs/{id}` — детали бага с комментариями и вложениями
   - Доступ: Admin, участники проекта, или публичный проект
-  
+
 - PUT `/bugs/{id}` — редактирование бага
   - Доступ:
-    * Admin: все поля
-    * Owner/Manager проекта (ProjectMember): все поля
-    * Developer: только assigned_to=себе или created_by=себе, ограниченные поля (status, description)
-    * Автор (created_by): только description
+    - Admin: все поля
+    - Owner/Manager проекта (ProjectMember): все поля
+    - Developer: только assigned_to=себе или created_by=себе, ограниченные поля (status, description)
+    - Автор (created_by): только description
   - Payload: частичное обновление полей
-  
+
 - DELETE `/bugs/{id}` — Admin, owner/manager проекта
 
 - PATCH `/bugs/{id}/assign` — назначить баг на разработчика
   - Доступ: Admin, owner/manager проекта
   - Payload: `{assignedTo: userId | null}`
-  
+
 - PATCH `/bugs/{id}/status` — изменить статус
   - Доступ: Admin, owner/manager проекта, developer (если assigned_to=себе)
   - Payload: `{status: 'new' | 'in_progress' | 'testing' | 'done' | 'closed'}`
@@ -273,10 +274,10 @@ Attachments
 
 - GET `/attachments?bugId=` — список вложений для бага
   - Доступ: Admin, участники проекта бага, или публичный проект
-  
+
 - GET `/attachments/{id}/download` — скачивание файла
   - Доступ: Admin, участники проекта бага, или публичный проект
-  
+
 - DELETE `/attachments/{id}` — Admin, автор вложения (uploaded_by), owner/manager проекта
 
 Comments
@@ -284,16 +285,16 @@ Comments
 - GET `/comments?bugId=&limit=&offset=` — список комментариев
   - Доступ: Admin, участники проекта бага, или публичный проект
   - Для MVP: возвращаем все комментарии без пагинации (если < 100)
-  
+
 - POST `/comments` — добавить комментарий
   - Доступ: Admin, участники проекта бага, пользователи для публичных проектов
   - Payload: `{bugId, content}`
   - content: текст с санитизацией HTML (XSS защита)
-  
+
 - PUT `/comments/{id}` — редактировать комментарий
   - Доступ: автор комментария (author_id) или Admin
   - Payload: `{content}`
-  
+
 - DELETE `/comments/{id}` — удалить комментарий
   - Доступ: автор комментария, Admin, owner/manager проекта
 

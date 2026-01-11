@@ -29,6 +29,14 @@
 - Dev отдельно: `npm run dev:backend`
 - Prod build: `npm run build:backend` → `npm run start:backend`
 
+## Логирование запросов к БД (Prisma)
+
+В режиме `npm run dev` (NODE_ENV=development) backend печатает в консоль все SQL-запросы Prisma (время выполнения, target, SQL и параметры).
+
+Управление:
+
+- `PRISMA_LOG_QUERIES=true|false` — принудительно включить/выключить вывод.
+
 ## Эндпоинты (основные)
 
 - Auth: `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`

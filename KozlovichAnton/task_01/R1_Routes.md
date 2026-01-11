@@ -2,156 +2,156 @@
 
 ## 1. Идентификация (вход в систему)
 
-   - **Пользователь любой роли**: логин через /auth/login → получение JWT токена
-   - **Администратор**: после логина → доступ к админ-панели (/admin)
-   - **Менеджер**: после логина → дашборд с проектами, где он участник
-   - **Разработчик**: после логина → дашборд с назначенными на него багами
-   - **Пользователь (Reporter)**: после логина → список публичных проектов
+- **Пользователь любой роли**: логин через /auth/login → получение JWT токена
+- **Администратор**: после логина → доступ к админ-панели (/admin)
+- **Менеджер**: после логина → дашборд с проектами, где он участник
+- **Разработчик**: после логина → дашборд с назначенными на него багами
+- **Пользователь (Reporter)**: после логина → список публичных проектов
 
 ## 2. Подготовка данных (Администратор)
 
-   - Создать первого администратора через /auth/register (только при bootstrap)
-   - Создать остальных пользователей через /users (POST)
-   - Создать проекты (Project) через /projects (POST)
-   - Указать владельца проекта (owner_id)
-   - Настроить публичность проекта (is_public)
+- Создать первого администратора через /auth/register (только при bootstrap)
+- Создать остальных пользователей через /users (POST)
+- Создать проекты (Project) через /projects (POST)
+- Указать владельца проекта (owner_id)
+- Настроить публичность проекта (is_public)
 
 ## 3. Работа с проектами (Администратор, Owner проекта)
 
-   - **Создание проекта** (Admin):
-     - POST /projects → создаётся Project
-     - Автоматически создаётся ProjectMember с role='owner' для owner_id
-   
-   - **Редактирование проекта** (Admin, Owner):
-     - PUT /projects/{id} → изменение name, description, is_public
-   
-   - **Удаление проекта** (Admin):
-     - DELETE /projects/{id} → каскадное удаление всех связанных данных
-   
-   - **Управление участниками** (Admin, Owner, Manager):
-     - GET /projects/{id}/members → просмотр списка участников
-     - POST /projects/{id}/members → добавление нового участника
-       * Payload: {userId, role: 'manager' | 'developer' | 'viewer'}
-     - PUT /projects/{id}/members/{userId} → изменение роли участника (только Owner)
-     - DELETE /projects/{id}/members/{userId} → удаление участника (только Owner/Admin)
+- **Создание проекта** (Admin):
+  - POST /projects → создаётся Project
+  - Автоматически создаётся ProjectMember с role='owner' для owner_id
+
+- **Редактирование проекта** (Admin, Owner):
+  - PUT /projects/{id} → изменение name, description, is_public
+
+- **Удаление проекта** (Admin):
+  - DELETE /projects/{id} → каскадное удаление всех связанных данных
+
+- **Управление участниками** (Admin, Owner, Manager):
+  - GET /projects/{id}/members → просмотр списка участников
+  - POST /projects/{id}/members → добавление нового участника
+    - Payload: {userId, role: 'manager' | 'developer' | 'viewer'}
+  - PUT /projects/{id}/members/{userId} → изменение роли участника (только Owner)
+  - DELETE /projects/{id}/members/{userId} → удаление участника (только Owner/Admin)
 
 ## 4. Работа с багами (все авторизованные пользователи)
 
-   - **Создание бага**:
-     - POST /bugs
-     - Доступ: участники проекта (ProjectMember) ИЛИ любой пользователь для публичных проектов
-     - Payload: {projectId, title, description, priority}
-     - created_by автоматически устанавливается из JWT
-   
-   - **Просмотр списка багов**:
-     - GET /bugs?projectId=&status=&priority=&assignedTo=&createdBy=
-     - Фильтры работают независимо и могут комбинироваться
-     - Доступ: Admin видит все; остальные - свои проекты + публичные
-   
-   - **Просмотр деталей бага**:
-     - GET /bugs/{id}
-     - Возвращает баг с комментариями и вложениями
-     - Доступ: участники проекта или публичный проект
-   
-   - **Редактирование бага**:
-     - PUT /bugs/{id}
-     - Права зависят от роли (см. матрицу прав)
-     - Admin/Manager: все поля
-     - Developer: только assigned_to=себе, поля: status, description
-     - Автор: только description
-   
-   - **Удаление бага**:
-     - DELETE /bugs/{id}
-     - Доступ: Admin, Owner/Manager проекта
+- **Создание бага**:
+  - POST /bugs
+  - Доступ: участники проекта (ProjectMember) ИЛИ любой пользователь для публичных проектов
+  - Payload: {projectId, title, description, priority}
+  - created_by автоматически устанавливается из JWT
+
+- **Просмотр списка багов**:
+  - GET /bugs?projectId=&status=&priority=&assignedTo=&createdBy=
+  - Фильтры работают независимо и могут комбинироваться
+  - Доступ: Admin видит все; остальные - свои проекты + публичные
+
+- **Просмотр деталей бага**:
+  - GET /bugs/{id}
+  - Возвращает баг с комментариями и вложениями
+  - Доступ: участники проекта или публичный проект
+
+- **Редактирование бага**:
+  - PUT /bugs/{id}
+  - Права зависят от роли (см. матрицу прав)
+  - Admin/Manager: все поля
+  - Developer: только assigned_to=себе, поля: status, description
+  - Автор: только description
+
+- **Удаление бага**:
+  - DELETE /bugs/{id}
+  - Доступ: Admin, Owner/Manager проекта
 
 ## 5. Просмотр и фильтрация (все пользователи)
 
-   - **Список проектов**:
-     - GET /projects
-     - Admin: все проекты
-     - Остальные: публичные + свои проекты (ProjectMember)
-   
-   - **Доска (Kanban)**:
-     - GET /projects/{id}/board
-     - Возвращает баги, сгруппированные по статусам
-     - Поддерживает фильтры: ?priority=&assignedTo=
-     - Доступ: участники проекта или публичный проект
-   
-   - **Детали бага**:
-     - GET /bugs/{id}
-     - Отображает: описание, статус, приоритет, исполнитель, автор
-     - Список комментариев (GET /comments?bugId=)
-     - Список вложений (GET /attachments?bugId=)
+- **Список проектов**:
+  - GET /projects
+  - Admin: все проекты
+  - Остальные: публичные + свои проекты (ProjectMember)
+
+- **Доска (Kanban)**:
+  - GET /projects/{id}/board
+  - Возвращает баги, сгруппированные по статусам
+  - Поддерживает фильтры: ?priority=&assignedTo=
+  - Доступ: участники проекта или публичный проект
+
+- **Детали бага**:
+  - GET /bugs/{id}
+  - Отображает: описание, статус, приоритет, исполнитель, автор
+  - Список комментариев (GET /comments?bugId=)
+  - Список вложений (GET /attachments?bugId=)
 
 ## 6. Управление багами (Менеджер, Разработчик)
 
-   - **Назначение бага на разработчика** (Admin, Manager):
-     - PATCH /bugs/{id}/assign
-     - Payload: {assignedTo: userId | null}
-     - Можно назначать только участников проекта с role='developer'
-   
-   - **Изменение статуса** (Admin, Manager, Developer для своих):
-     - PATCH /bugs/{id}/status
-     - Payload: {status: 'new' | 'in_progress' | 'testing' | 'done' | 'closed'}
-     - Developer может менять только для assigned_to=себе
-   
-   - **Изменение приоритета** (Admin, Manager):
-     - PUT /bugs/{id}
-     - Payload: {priority: 'low' | 'medium' | 'high' | 'critical'}
-   
-   - **Перемещение на доске**:
-     - Frontend: drag & drop → вызывает PATCH /bugs/{id}/status
-     - Backend проверяет права доступа перед изменением
-   
-   - **Закрытие бага** (Admin, Manager, Developer для своих):
-     - PATCH /bugs/{id}/status с {status: 'closed'}
-     - Опционально: добавить комментарий о причине закрытия
+- **Назначение бага на разработчика** (Admin, Manager):
+  - PATCH /bugs/{id}/assign
+  - Payload: {assignedTo: userId | null}
+  - Можно назначать только участников проекта с role='developer'
+
+- **Изменение статуса** (Admin, Manager, Developer для своих):
+  - PATCH /bugs/{id}/status
+  - Payload: {status: 'new' | 'in_progress' | 'testing' | 'done' | 'closed'}
+  - Developer может менять только для assigned_to=себе
+
+- **Изменение приоритета** (Admin, Manager):
+  - PUT /bugs/{id}
+  - Payload: {priority: 'low' | 'medium' | 'high' | 'critical'}
+
+- **Перемещение на доске**:
+  - Frontend: drag & drop → вызывает PATCH /bugs/{id}/status
+  - Backend проверяет права доступа перед изменением
+
+- **Закрытие бага** (Admin, Manager, Developer для своих):
+  - PATCH /bugs/{id}/status с {status: 'closed'}
+  - Опционально: добавить комментарий о причине закрытия
 
 ## 7. Комментарии и вложения (все пользователи с доступом к проекту)
 
-   - **Добавление комментария**:
-     - POST /comments
-     - Payload: {bugId, content}
-     - HTML санитизируется (XSS защита)
-     - Доступ: участники проекта или публичный проект
-   
-   - **Редактирование комментария**:
-     - PUT /comments/{id}
-     - Доступ: автор комментария или Admin
-   
-   - **Удаление комментария**:
-     - DELETE /comments/{id}
-     - Доступ: автор, Admin, Owner/Manager проекта
-   
-   - **Загрузка вложения**:
-     - POST /attachments
-     - Multipart/form-data: {bugId, file}
-     - Валидация: max 10MB, типы: image/*, pdf, text
-     - Доступ: участники проекта или публичный проект
-   
-   - **Скачивание вложения**:
-     - GET /attachments/{id}/download
-     - Возвращает файл с корректными headers
-     - Доступ: участники проекта или публичный проект
-   
-   - **Удаление вложения**:
-     - DELETE /attachments/{id}
-     - Доступ: автор вложения, Admin, Owner/Manager проекта
+- **Добавление комментария**:
+  - POST /comments
+  - Payload: {bugId, content}
+  - HTML санитизируется (XSS защита)
+  - Доступ: участники проекта или публичный проект
+
+- **Редактирование комментария**:
+  - PUT /comments/{id}
+  - Доступ: автор комментария или Admin
+
+- **Удаление комментария**:
+  - DELETE /comments/{id}
+  - Доступ: автор, Admin, Owner/Manager проекта
+
+- **Загрузка вложения**:
+  - POST /attachments
+  - Multipart/form-data: {bugId, file}
+  - Валидация: max 10MB, типы: image/*, pdf, text
+  - Доступ: участники проекта или публичный проект
+
+- **Скачивание вложения**:
+  - GET /attachments/{id}/download
+  - Возвращает файл с корректными headers
+  - Доступ: участники проекта или публичный проект
+
+- **Удаление вложения**:
+  - DELETE /attachments/{id}
+  - Доступ: автор вложения, Admin, Owner/Manager проекта
 
 ## 8. Отчёты и статистика (Admin, Manager)
 
-   - **Активность по проекту**:
-     - GET /projects/{id}/activity
-     - Возвращает последние действия (создание/обновление багов)
-   
-   - **Статистика багов**:
-     - GET /projects/{id}/stats
-     - Количество багов по статусам и приоритетам
-     - Средний срок решения бага
-   
-   - **Личный дашборд**:
-     - GET /bugs?assignedTo=me
-     - Список багов, назначенных на текущего пользователя
+- **Активность по проекту**:
+  - GET /projects/{id}/activity
+  - Возвращает последние действия (создание/обновление багов)
+
+- **Статистика багов**:
+  - GET /projects/{id}/stats
+  - Количество багов по статусам и приоритетам
+  - Средний срок решения бага
+
+- **Личный дашборд**:
+  - GET /bugs?assignedTo=me
+  - Список багов, назначенных на текущего пользователя
 
 ## 9. Типичные user flows
 

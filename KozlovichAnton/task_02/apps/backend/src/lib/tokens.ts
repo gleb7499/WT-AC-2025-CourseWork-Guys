@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import ms from "ms";
+import type { StringValue } from "ms";
 import type { CookieOptions, Response } from "express";
 import { config } from "../config";
 import { generateJti, sha256 } from "./hash";
@@ -19,18 +20,18 @@ export type RefreshPayload = {
   exp: number;
 };
 
-const accessTtl = ms(config.JWT_ACCESS_TTL);
-const refreshTtl = ms(config.JWT_REFRESH_TTL);
+const accessTtl = ms(config.JWT_ACCESS_TTL as StringValue);
+const refreshTtl = ms(config.JWT_REFRESH_TTL as StringValue);
 
 export const createAccessToken = (userId: string, role: string) => {
   return jwt.sign({ sub: userId, role }, config.JWT_ACCESS_SECRET, {
-    expiresIn: config.JWT_ACCESS_TTL
+    expiresIn: config.JWT_ACCESS_TTL as StringValue
   });
 };
 
 export const createRefreshToken = (userId: string, jti: string) => {
   return jwt.sign({ sub: userId, jti }, config.JWT_REFRESH_SECRET, {
-    expiresIn: config.JWT_REFRESH_TTL
+    expiresIn: config.JWT_REFRESH_TTL as StringValue
   });
 };
 

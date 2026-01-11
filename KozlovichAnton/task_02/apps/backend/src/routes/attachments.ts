@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import multer from "multer";
+import type { FileFilterCallback } from "multer";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
@@ -23,11 +24,19 @@ const allowedMime = new Set([
 ]);
 
 const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
+  destination: (
+    _req: Express.Request,
+    _file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void
+  ) => {
     ensureUploadDir();
     cb(null, UPLOAD_DIR);
   },
-  filename: (_req, file, cb) => {
+  filename: (
+    _req: Express.Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void
+  ) => {
     const safeOriginal = file.originalname.replace(/[^a-zA-Z0-9_.-]/g, "_");
     const unique = `${Date.now()}-${crypto.randomUUID()}-${safeOriginal}`;
     cb(null, unique);
@@ -37,7 +46,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
+  fileFilter: (_req: Express.Request, file: Express.Multer.File, cb: FileFilterCallback) => {
     if (file.mimetype.startsWith("image/")) return cb(null, true);
     if (allowedMime.has(file.mimetype)) return cb(null, true);
     return cb(new HttpError(400, "Unsupported file type"));

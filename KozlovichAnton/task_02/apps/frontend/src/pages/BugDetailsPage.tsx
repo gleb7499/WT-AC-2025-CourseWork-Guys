@@ -13,7 +13,10 @@ const bugEditSchema = z.object({
   description: z.string().max(5000).optional(),
   status: z.enum(["new", "in_progress", "testing", "done", "closed"]).optional(),
   priority: z.enum(["low", "medium", "high", "critical"]).optional(),
-  assignedTo: z.string().uuid().nullable().optional()
+  assignedTo: z.preprocess(
+    (val) => (val === "" ? null : val),
+    z.string().uuid().nullable().optional()
+  )
 });
 
 const commentSchema = z.object({ content: z.string().min(1) });
