@@ -1,0 +1,17 @@
+Для рисунка 3.1 – Общая архитектура системы:
+
+Создать диаграмму архитектуры системы, показывающую три уровня:
+1. Клиентский уровень (браузер с React SPA)
+2. Серверный уровень (Node.js + Express API)
+3. Уровень данных (PostgreSQL + Prisma ORM)
+
+На диаграмме должны быть отображены:
+- Прямоугольники для каждого уровня с указанием используемых технологий
+- Стрелки взаимодействия между уровнями с указанием протоколов (HTTP/HTTPS, SQL)
+- Указание формата данных (JSON для клиент-сервер взаимодействия)
+- Указание основных компонентов каждого уровня:
+  * Клиент: React Components, React Router, API Client
+  * Сервер: Express Router, Middleware (auth, validation, error handling), Business Logic, Prisma Client
+  * БД: PostgreSQL tables (User, Company, Job, Stage, Note, Reminder, RefreshToken)
+
+Диаграмму можно создать с помощью draw.io, lucidchart или аналогичных инструментов.
