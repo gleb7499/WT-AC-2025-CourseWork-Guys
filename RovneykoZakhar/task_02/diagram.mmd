@@ -1,0 +1,73 @@
+erDiagram
+    User ||--o{ Card : creates
+    User ||--o{ Deck : creates
+    User ||--o{ UserDeck : has
+    User ||--o{ Review : writes
+    User ||--o{ Test : takes
+    
+    Deck ||--o{ DeckCard : contains
+    Card ||--o{ DeckCard : "belongs to"
+    Deck ||--o{ UserDeck : "added by users"
+    Deck ||--o{ Review : "reviewed by"
+    Deck ||--o{ Test : "tested in"
+
+    User {
+        INTEGER id PK
+        TEXT email UK
+        TEXT name
+        TEXT password
+        TEXT role
+        DATETIME created_at
+    }
+
+    Card {
+        INTEGER id PK
+        TEXT word
+        TEXT TranslitWord
+        TEXT examples
+        TEXT tags
+        INTEGER UserId FK
+        DATETIME created_at
+    }
+
+    Deck {
+        INTEGER id PK
+        TEXT name
+        TEXT description
+        INTEGER UserId FK
+        REAL rating_avg
+        INTEGER rating_count
+        DATETIME created_at
+    }
+
+    DeckCard {
+        INTEGER id PK
+        INTEGER deck_id FK
+        INTEGER card_id FK
+        DATETIME added_at
+    }
+
+    UserDeck {
+        INTEGER id PK
+        INTEGER user_id FK
+        INTEGER deck_id FK
+        BOOLEAN is_favorite
+        DATETIME created_at
+    }
+
+    Review {
+        INTEGER id PK
+        INTEGER deck_id FK
+        INTEGER user_id FK
+        INTEGER rating
+        DATETIME reviewed_at
+    }
+
+    Test {
+        INTEGER id PK
+        INTEGER UserId FK
+        INTEGER DeckId FK
+        REAL score
+        INTEGER total
+        DATETIME created_at
+    }

@@ -1,0 +1,25 @@
+graph TB
+    subgraph Client["🖥️ Клиентская часть (Client / Frontend)"]
+        FE["React + TypeScript SPA<br/>Браузер пользователя"]
+    end
+    
+    subgraph Server["⚙️ Серверная часть (Server / Backend)"]
+        BE["FastAPI REST API<br/>Обработка HTTP-запросов"]
+    end
+    
+    subgraph Database["💾 База данных (Database)"]
+        DB["SQLite DB<br/>Хранилище данных"]
+    end
+    
+    FE -->|"HTTP/JSON + JWT Token"| BE
+    BE -->|"JSON Response"| FE
+    BE -->|"SQL Queries"| DB
+    DB -->|"Data Results"| BE
+    
+    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
+    classDef serverStyle fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    classDef dbStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000
+    
+    class FE clientStyle
+    class BE serverStyle
+    class DB dbStyle

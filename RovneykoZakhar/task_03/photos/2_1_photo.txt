@@ -1,5 +1,26 @@
 Для рисунка 2.1 – Диаграмма сущностей и связей:
 
-Создать ERD-диаграмму (Entity-Relationship Diagram) базы данных системы. Диаграмма должна показывать 7 таблиц: User, Card, Deck, DeckCard, UserDeck, Review, Test. Для каждой таблицы отобразить основные поля (id, имена полей, типы данных). Показать связи между таблицами стрелками с указанием типа связи (один-ко-многим, многие-ко-многим). Использовать классический нотацию диаграмм баз данных (crow's foot notation или аналогичную).
+✅ ERD-диаграмма создана в файле 2_1_photo.png
 
-Центральная сущность User должна иметь связи с Card (один пользователь — много карточек), Deck (один пользователь — много колод), Test (один пользователь — много тестов), UserDeck (один пользователь — много записей коллекции), Review (один пользователь — много оценок). Таблица DeckCard связывает Deck и Card (многие-ко-многим). Все связи должны быть чётко видны на диаграмме.
+Диаграмма содержит 7 таблиц базы данных системы:
+- User: id, email, name, password, role, created_at
+- Card: id, word, TranslitWord, examples, tags, UserId, created_at
+- Deck: id, name, description, UserId, rating_avg, rating_count, created_at
+- DeckCard: id, deck_id, card_id, added_at
+- UserDeck: id, user_id, deck_id, is_favorite, created_at
+- Review: id, deck_id, user_id, rating, reviewed_at
+- Test: id, UserId, DeckId, score, total, created_at
+
+Связи (crow's foot notation):
+- User ||--o{ Card (один-ко-многим)
+- User ||--o{ Deck (один-ко-многим)
+- User ||--o{ UserDeck (один-ко-многим)
+- User ||--o{ Review (один-ко-многим)
+- User ||--o{ Test (один-ко-многим)
+- Deck ||--o{ DeckCard (один-ко-многим)
+- Card ||--o{ DeckCard (один-ко-многим)
+- Deck ||--o{ UserDeck (один-ко-многим)
+- Deck ||--o{ Review (один-ко-многим)
+- Deck ||--o{ Test (один-ко-многим)
+
+Исходная диаграмма в формате Mermaid: RovneykoZakhar/task_02/diagram.mmd
