@@ -108,6 +108,7 @@ API — верхнеуровневые ресурсы и операции
 - **[RECOMMENDED]** Тесты: unit + интеграционные для логики конфликтов
 
 **Обязательные требования безопасности (MVP)**:
+
 - Helmet.js для HTTP заголовков безопасности
 - CORS с явным списком разрешённых origins
 - Rate limiting: 100 req/min для общих endpoints, 5 req/min для auth
@@ -181,6 +182,7 @@ Bookings (создание и управление)
 - POST `/bookings` — создание бронирования
   - Auth: Bearer JWT (required)
   - Payload (пример):
+
   ```json
   {
     "roomId": "room-uuid-1",
@@ -189,6 +191,7 @@ Bookings (создание и управление)
     "purpose": "Лекция по математике"
   }
   ```
+
   - **Валидация и проверки** (в порядке выполнения):
     1. Поля: roomId (UUID, exists), startTime/endTime (ISO 8601, startTime < endTime)
     2. Purpose: 1-500 символов, обязательно
@@ -197,6 +200,7 @@ Bookings (создание и управление)
        - teacher: макс. 4 часа → ошибка 403: "Преподаватель может бронировать до 4 часов"
        - admin: без ограничений
     4. **Проверка конфликтов** (SQL):
+
        ```sql
        SELECT id, start_time, end_time, user_id
        FROM bookings
@@ -204,6 +208,7 @@ Bookings (создание и управление)
          AND status = 'active'
          AND NOT (end_time <= $startTime OR start_time >= $endTime)
        ```
+
        Если найдены → 409 Conflict с массивом занятых слотов
     5. Создание записи + запись в audit_log (action: 'created')
   - Response: `201 {id, roomId, userId, startTime, endTime, purpose, status, createdAt}`
@@ -257,7 +262,7 @@ Statistics (Admin/Teacher)
   - Auth: Bearer JWT (admin only)
   - Params: from/to (ISO 8601 dates, optional, default: last 30 days)
   - Response: `200 {roomId, roomName, period: {from, to}, totalBookings, totalHours, utilizationPercent, topUsers: [{userId, username, bookingsCount}]}`
-  - Calculation: utilizationPercent = (totalHours / (period * 24 * 7)) * 100 (предполагаем работу 24/7)
+  - Calculation: utilizationPercent = (totalHours / (period *24* 7)) * 100 (предполагаем работу 24/7)
 
 - GET `/statistics/users/{id}?from=&to=` — статистика бронирований пользователя
   - Auth: Bearer JWT (admin OR self)

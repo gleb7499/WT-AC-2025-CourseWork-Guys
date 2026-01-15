@@ -1,0 +1,12 @@
+Для рисунка 3.3 – Дерево модулей серверной части:
+Открыть исходный код серверного приложения в IDE.
+В дереве проекта раскрыть папку серверной части и каталог модулей.
+Сделать скриншот так, чтобы были видны основные модули предметной области и типовые файлы внутри каждого модуля.
+Рекомендуемый состав, который должен попасть в кадр:
+- модуль auth (router/controller/service/schemas);
+- модуль users (router/controller/service/schemas);
+- модуль forms (router/controller/service/schemas);
+- модуль statuses (router/controller/service/schemas);
+- модуль applications (router/controller/service/schemas);
+- модуль attachments (router/controller/service/schemas).
+Скриншот обрезать так, чтобы не были видны личные пути ОС.
