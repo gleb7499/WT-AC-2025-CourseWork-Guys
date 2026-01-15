@@ -31,7 +31,7 @@ JWT (access + refresh с ротацией), роли admin/user, модели To
 npm install
 cp .env.example .env           # заполнить значения
 npm run prisma:migrate -w backend   # prisma migrate dev
-npx prisma db seed -w backend      # сид с тестовыми данными
+npm run prisma:seed -w backend      # сид с тестовыми данными
 npm run dev -w backend             # старт dev
 ```
 
