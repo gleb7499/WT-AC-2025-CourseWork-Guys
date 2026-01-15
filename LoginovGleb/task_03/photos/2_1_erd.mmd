@@ -1,0 +1,66 @@
+erDiagram
+    USER ||--o{ APPLICATION : creates
+    USER ||--o{ FORM : manages
+    USER ||--o{ ATTACHMENT : uploads
+    FORM ||--o{ APPLICATION : uses
+    STATUS ||--o{ APPLICATION : has
+    APPLICATION ||--o{ ATTACHMENT : contains
+    APPLICATION ||--o{ STATUS_HISTORY : tracks
+
+    USER {
+        id UUID PK
+        username varchar
+        email varchar
+        password_hash varchar
+        role varchar
+        created_at datetime
+    }
+    FORM {
+        id UUID PK
+        name varchar
+        description text
+        fields jsonb
+        is_active boolean
+        created_by UUID FK
+        created_at datetime
+        updated_at datetime
+    }
+    STATUS {
+        id UUID PK
+        name varchar
+        description text
+        color varchar
+        order int
+        is_final boolean
+        created_at datetime
+    }
+    APPLICATION {
+        id UUID PK
+        form_id UUID FK
+        user_id UUID FK
+        status_id UUID FK
+        data jsonb
+        comment text
+        created_at datetime
+        updated_at datetime
+        submitted_at datetime
+    }
+    ATTACHMENT {
+        id UUID PK
+        application_id UUID FK
+        filename varchar
+        file_path varchar
+        file_size int
+        mime_type varchar
+        uploaded_by UUID FK
+        uploaded_at datetime
+    }
+    STATUS_HISTORY {
+        id UUID PK
+        application_id UUID FK
+        from_status_id UUID FK
+        to_status_id UUID FK
+        changed_by UUID FK
+        changed_at datetime
+        comment text
+    }
