@@ -1,0 +1,77 @@
+erDiagram
+    Users ||--o{ Company : "has"
+    Users ||--|| UsernameWorker : "has"
+    Users ||--o{ Chat : "employer"
+    Users ||--o{ Chat : "worker"
+    Company ||--o{ Job : "publishes"
+    UsernameWorker ||--o{ Applications : "submits"
+    Job ||--o{ Applications : "receives"
+    Chat ||--o{ Message : "contains"
+    Users ||--o{ Message : "sends"
+
+    Users {
+        INTEGER id PK
+        TEXT email "NOT NULL"
+        TEXT name "NOT NULL"
+        TEXT surname "NOT NULL"
+        INTEGER age "NOT NULL"
+        TEXT role "CHECK(role IN employer, worker) NOT NULL"
+        TEXT password_hash "NOT NULL"
+        DATETIME created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Company {
+        INTEGER id PK
+        INTEGER userid FK "NOT NULL"
+        TEXT title "NOT NULL"
+        TEXT city
+        TEXT businessAreas
+    }
+
+    Job {
+        INTEGER id PK
+        INTEGER companyId FK "NOT NULL"
+        TEXT name "NOT NULL"
+        REAL salary
+        TEXT workExperience
+        TEXT workSchedule "CHECK(полная/частичная/гибкий/сменный/удаленно/гибрид)"
+        TEXT workShift "CHECK(5/2, 2/2, 3/2, 1/1)"
+        INTEGER workHours
+        TEXT skills
+        TEXT language
+        BOOLEAN remote "DEFAULT FALSE"
+        BOOLEAN hybrid "DEFAULT FALSE"
+        DATETIME created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    UsernameWorker {
+        INTEGER id PK
+        INTEGER userid FK "NOT NULL"
+        TEXT title
+        TEXT language
+        TEXT skills
+        TEXT description
+        TEXT workExperience
+    }
+
+    Applications {
+        INTEGER ApplicationId PK
+        INTEGER resumeId FK "NOT NULL"
+        INTEGER jobId FK "NOT NULL"
+        TEXT message
+        DATETIME creationTime "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    Chat {
+        INTEGER id PK
+        INTEGER employmentId FK "NOT NULL"
+        INTEGER workerId FK "NOT NULL"
+    }
+
+    Message {
+        INTEGER id PK
+        INTEGER senderId FK "NOT NULL"
+        INTEGER chatId FK "NOT NULL"
+        TEXT text
+        DATETIME created "DEFAULT CURRENT_TIMESTAMP"
+    }

@@ -1,0 +1,61 @@
+graph TB
+    subgraph Frontend["🖥️ КЛИЕНТ (Frontend)"]
+        direction TB
+        FT["<b>Next.js 16 + React 19</b><br/>TypeScript"]
+        FUI["<b>UI библиотеки:</b><br/>Material-UI + Tailwind CSS"]
+        FST["<b>Состояние:</b><br/>Zustand"]
+        FC["<b>Компоненты:</b><br/>• Страницы<br/>• Формы<br/>• Списки"]
+        FH["<b>Хуки:</b><br/>API-запросы"]
+        
+        FT --> FUI
+        FT --> FST
+        FT --> FC
+        FT --> FH
+    end
+
+    subgraph Backend["⚙️ СЕРВЕР (Backend)"]
+        direction TB
+        BF["<b>FastAPI (Python)</b><br/>Uvicorn ASGI сервер"]
+        BA["<b>Аутентификация:</b><br/>JWT Authentication"]
+        BV["<b>Валидация:</b><br/>Pydantic"]
+        BE["<b>REST API:</b><br/>26 endpoints"]
+        BL["<b>Бизнес-логика</b>"]
+        
+        BF --> BA
+        BF --> BV
+        BF --> BE
+        BF --> BL
+    end
+
+    subgraph Database["🗄️ БАЗА ДАННЫХ"]
+        direction TB
+        DT["<b>SQLite</b>"]
+        DTA["<b>8 таблиц:</b><br/>• Users<br/>• Company<br/>• Job<br/>• UsernameWorker<br/>• Applications<br/>• Chat<br/>• Message<br/>• Token"]
+        DTI["<b>Целостность:</b><br/>Внешние ключи (FK)"]
+        
+        DT --> DTA
+        DT --> DTI
+    end
+
+    Frontend -->|"HTTP/REST запросы<br/>(JSON)<br/>JWT Bearer токены"| Backend
+    Backend -->|"SQL запросы"| Database
+
+    style Frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style Backend fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    style Database fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
+    
+    style FT fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style FUI fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style FST fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style FC fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style FH fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    
+    style BF fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style BA fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style BV fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style BE fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    style BL fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+    
+    style DT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DTA fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DTI fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
