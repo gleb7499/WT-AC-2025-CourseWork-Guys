@@ -1,0 +1,51 @@
+graph TB
+    subgraph client["Клиентский уровень"]
+        browser["Веб-браузер<br/>HTML страницы<br/>HTTP запросы"]
+    end
+
+    subgraph server["Серверный уровень: Flask приложение"]
+        direction TB
+        flask["Flask Application<br/>run.py"]
+        
+        subgraph blueprints["Blueprints и модули"]
+            routes["routes.py<br/>Основная маршрутизация<br/>Курсы, уроки, тесты"]
+            auth["auth.py<br/>Регистрация<br/>Вход/Выход<br/>Аутентификация"]
+        end
+        
+        models["models.py<br/>ORM модели<br/>User, Course, Lesson<br/>Progress, Test, Comment"]
+        
+        sqlalchemy["SQLAlchemy ORM<br/>extensions.py<br/>Абстракция БД"]
+    end
+
+    subgraph database["Уровень данных"]
+        sqlite["SQLite БД<br/>kotkovets.db<br/>Реляционные таблицы"]
+    end
+
+    browser -->|HTTP GET/POST| flask
+    flask -->|Маршрутизация| routes
+    flask -->|Аутентификация| auth
+    
+    routes -->|Запросы к моделям| models
+    auth -->|Работа с User| models
+    
+    models -->|ORM запросы| sqlalchemy
+    sqlalchemy -->|SQL запросы| sqlite
+    
+    sqlite -->|Результаты SQL| sqlalchemy
+    sqlalchemy -->|Объекты Python| models
+    models -->|Данные| routes
+    models -->|Данные| auth
+    routes -->|Рендеринг шаблонов| flask
+    auth -->|Рендеринг шаблонов| flask
+    flask -->|HTTP Response<br/>HTML/JSON| browser
+
+    style client fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    style server fill:#fff3e0,stroke:#e65100,stroke-width:3px
+    style database fill:#f1f8e9,stroke:#33691e,stroke-width:3px
+    style browser fill:#b3e5fc,stroke:#0277bd
+    style flask fill:#ffe0b2,stroke:#ef6c00
+    style routes fill:#ffccbc,stroke:#d84315
+    style auth fill:#ffccbc,stroke:#d84315
+    style models fill:#ffccbc,stroke:#d84315
+    style sqlalchemy fill:#fff9c4,stroke:#f57f17
+    style sqlite fill:#c5e1a5,stroke:#558b2f

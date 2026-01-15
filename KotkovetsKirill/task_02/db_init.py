@@ -1,6 +1,6 @@
 from app import create_app
 from app.extensions import db
-from app.models import User, Course, Lesson
+from app.models import User, Course, Lesson, Test, Question, Option
 
 app = create_app()
 
