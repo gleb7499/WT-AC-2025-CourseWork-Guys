@@ -1,0 +1,21 @@
+Для рисунка 2.1 – Диаграмма сущность-связь:
+
+Создать диаграмму сущность-связь (ERD) для системы «Работа мечты», отображающую восемь основных сущностей:
+- Users (пользователи) с атрибутами: id, email, name, surname, age, role, password_hash, created_at
+- Company (компании) с атрибутами: id, userid, title, city, businessAreas
+- Job (вакансии) с атрибутами: id, companyId, name, salary, workExperience, workSchedule, workShift, workHours, skills, language, remote, hybrid, created_at
+- UsernameWorker (резюме) с атрибутами: id, userid, title, language, skills, description, workExperience
+- Applications (отклики) с атрибутами: ApplicationId, resumeId, jobId, message, creationTime
+- Chat (чаты) с атрибутами: id, employmentId, workerId
+- Message (сообщения) с атрибутами: id, senderId, chatId, text, created
+
+На диаграмме должны быть показаны связи:
+- Users 1:N Company (один пользователь-работодатель может иметь много компаний)
+- Company 1:N Job (одна компания может публиковать много вакансий)
+- Users 1:1 UsernameWorker (один пользователь-соискатель имеет одно резюме)
+- UsernameWorker 1:N Applications (одно резюме может участвовать в многих откликах)
+- Job 1:N Applications (одна вакансия может иметь много откликов)
+- Users N:M Users через Chat (пользователи связаны через чаты)
+- Chat 1:N Message (один чат содержит много сообщений)
+
+Диаграмму можно создать с помощью инструментов draw.io, Lucidchart, dbdiagram.io или аналогичных.

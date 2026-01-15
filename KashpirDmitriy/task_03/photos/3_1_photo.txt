@@ -1,0 +1,30 @@
+Для рисунка 3.1 – Трёхуровневая архитектура системы:
+
+Создать архитектурную диаграмму, показывающую три уровня системы:
+
+Верхний уровень - Клиент (Frontend):
+- Next.js 16 + React 19
+- TypeScript
+- Material-UI + Tailwind CSS
+- Zustand (управление состоянием)
+- Компоненты: страницы, формы, списки
+- Хуки для API-запросов
+
+Средний уровень - Сервер (Backend):
+- FastAPI (Python)
+- Uvicorn (ASGI сервер)
+- JWT Authentication
+- Pydantic валидация
+- 26 REST API endpoints
+- Бизнес-логика
+
+Нижний уровень - База данных:
+- SQLite
+- 8 таблиц (Users, Company, Job, UsernameWorker, Applications, Chat, Message, Token)
+- Внешние ключи для целостности
+
+Стрелки между уровнями:
+- Клиент → Сервер: HTTP/REST запросы (JSON), JWT Bearer токены
+- Сервер → База данных: SQL запросы
+
+Диаграмму можно создать с помощью draw.io, Lucidchart или PowerPoint, используя блоки для каждого уровня и стрелки для показа взаимодействия.
