@@ -1,0 +1,12 @@
+flowchart LR
+  %% Диаграмма трёхуровневой архитектуры системы «Поехали!»
+
+  client["Уровень представления (Клиент)<br/><b>React SPA</b><br/>Браузер пользователя<br/>Компоненты: UI компоненты, формы, роутинг"]
+  server["Прикладной уровень (Сервер)<br/><b>Node.js + Express</b><br/>Основные модули: Auth, Trips, Stops, Notes, Expenses<br/>Middleware: аутентификация, авторизация<br/>REST API endpoints"]
+  db["Уровень данных<br/><b>PostgreSQL</b><br/>ORM: Prisma<br/>Таблицы: users, trips, stops, notes, expenses, trip_participants"]
+
+  client -->|"HTTP/HTTPS REST API (JSON)"| server
+  server -->|"SQL запросы через Prisma ORM"| db
+
+  classDef layer fill:#F7F7FF,stroke:#4C6EF5,stroke-width:1px,color:#111827;
+  class client,server,db layer;
