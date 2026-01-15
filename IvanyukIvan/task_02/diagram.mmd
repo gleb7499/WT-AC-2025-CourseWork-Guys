@@ -1,0 +1,26 @@
+%% Диаграмма 3-уровневой архитектуры веб-приложения (IvanyukIvan/task_02)
+%% 1) Клиент: React + Vite (порт 5173)
+%% 2) Сервер: Express + TypeScript (порт 3000)
+%% 3) БД: PostgreSQL
+%% Взаимодействия: REST API (HTTP/JSON), JWT-аутентификация, Prisma ORM
+
+flowchart LR
+  subgraph L1["Клиентский уровень"]
+    FE["React + Vite (порт 5173)"]
+  end
+
+  subgraph L2["Серверный уровень"]
+    BE["Express API + TypeScript (порт 3000)"]
+    AUTH["JWT: access в Authorization Bearer, refresh в httpOnly cookie"]
+    ORM["Prisma ORM (Prisma Client)"]
+  end
+
+  subgraph L3["Уровень данных"]
+    DB["PostgreSQL"]
+  end
+
+  FE -->|"HTTP REST API (JSON)"| BE
+  FE -.->|"JWT access token"| AUTH
+  AUTH -.->|"проверка/обновление токенов"| BE
+  BE -->|"Prisma ORM"| ORM
+  ORM -->|"SQL"| DB
