@@ -1,0 +1,17 @@
+Для рисунка 2.1 – Диаграмма сущностей и связей:
+
+Создать диаграмму ERD (Entity Relationship Diagram), показывающую пять основных сущностей системы и их связи:
+
+1. Сущность User (Пользователь) с атрибутами: id, username, email, passwordHash, role, createdAt, updatedAt
+2. Сущность Room (Аудитория) с атрибутами: id, name, description, capacity, equipment, location, createdAt, updatedAt
+3. Сущность Booking (Бронирование) с атрибутами: id, roomId, userId, startTime, endTime, purpose, status, createdAt, updatedAt
+4. Сущность RefreshToken (Токен обновления) с атрибутами: id, userId, tokenHash, expiresAt, revokedAt, replacedByTokenId, createdAt
+5. Сущность AuditLog (Журнал аудита) с атрибутами: id, entityType, entityId, action, userId, changes, reason, createdAt
+
+Связи между сущностями:
+- User → Booking (один ко многим): пользователь создаёт бронирования
+- Room → Booking (один ко многим): аудитория имеет бронирования
+- User → RefreshToken (один ко многим): пользователь имеет токены обновления
+- User → AuditLog (один ко многим): пользователь выполняет действия
+
+Можно использовать инструменты для создания ERD: draw.io, Lucidchart, dbdiagram.io или генерацию через Prisma Studio. Диаграмма должна быть чёткой и читаемой, с указанием типов связей и ключевых полей.
