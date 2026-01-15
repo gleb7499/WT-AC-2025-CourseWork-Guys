@@ -1,0 +1,30 @@
+flowchart TB
+  %% Рисунок 3.1 — Трёхзвенная архитектура системы бронирования аудиторий
+
+  subgraph Client["Client Layer - Presentation"]
+    Browser[Web Browser]
+    SPA["React SPA - Vite"]
+    UI["UI Components / Pages<br/>(Login, Register, Dashboard, Rooms, Bookings, Schedule)"]
+
+    Browser --> SPA --> UI
+  end
+
+  subgraph App["Application Layer - Business Logic"]
+    Express[Express.js Server]
+    Routes["REST API Endpoints<br/>/auth, /users, /rooms, /bookings, /schedule, /statistics"]
+    Middleware["Middleware<br/>CORS + cookies, Helmet, JSON parser<br/>AuthN/AuthZ, Zod validation, Error handler"]
+    Services["Business Services<br/>Auth service, Booking service, etc."]
+    Prisma["Prisma ORM - Prisma Client"]
+
+    Express --> Middleware --> Routes --> Services --> Prisma
+  end
+
+  subgraph Data["Data Layer - Storage"]
+    DB[(PostgreSQL Database)]
+    Tables["Tables<br/>users, rooms, bookings, refresh_tokens, audit_logs"]
+
+    DB --- Tables
+  end
+
+  UI -->|"HTTP/HTTPS JSON<br/>+ HttpOnly refresh cookie"| Express
+  Prisma -->|SQL queries| DB

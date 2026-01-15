@@ -72,7 +72,7 @@ CORS_ORIGIN=http://localhost:5173
 
 ## Seed данные (для разработки/демо)
 
-  - <admin@example.com> / Admin1234 (role: admin)
+- <admin@example.com> / Admin1234 (role: admin)
 - <user1@example.com> / User1234 (role: user)
 - <user2@example.com> / User2234 (role: user)
 - Данные: поездки «Поездка в Стамбул» (owner: user1, participant: user2) со стопами/заметками/расходами; «Поездка в Сочи» (owner: user2)
