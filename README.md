@@ -1,20 +1,20 @@
-# Web Technologies Coursework Portfolio by Loginov Gleb
+# Web Technologies | Engineering Portfolio
 
-This is my portfolio of full-stack coursework projects for the Web Technologies course. I am Loginov Gleb, and I personally completed, assembled, documented, and prepared every project in this repository for evaluation.
+This repository presents a multi-project engineering portfolio created by Loginov Gleb during the Web Technologies course. It brings together a series of complete product implementations, from early requirements and system design through application development, testing, documentation, and delivery.
 
-The student names used as directory names identify the individual coursework briefs and delivery tracks. They do not represent separate authors of the implementations collected here: the development work across this repository was carried out by me.
+The collection is intentionally broad: each assignment explores a different product domain, while the consistent quality of the architecture, implementation, and documentation reflects one development process and one technical owner.
 
-## My contribution
+## Scope of ownership
 
-I handled the complete delivery process for every project represented in this repository:
+I owned the full lifecycle of the projects represented here. My work covered:
 
-- analyzed the assigned domain and transformed requirements into a workable product scope;
-- designed the application structure, data models, roles, permissions, and API contracts;
-- implemented the frontend, backend, database integration, and authentication flows;
-- added validation, error handling, security measures, seed data, and automated checks where applicable;
-- prepared run instructions, technical documentation, coursework reports, and evaluation-ready project structure.
+- translating each brief into a clear product scope and set of user workflows;
+- shaping the system architecture, data models, API contracts, roles, and permission boundaries;
+- implementing the frontend, backend, persistence layer, and authentication flows;
+- strengthening the applications with validation, error handling, security controls, seed data, and automated checks;
+- producing the technical documentation, runbooks, reports, and evaluation-ready project structure.
 
-This repository therefore demonstrates my ability to deliver multiple independent software systems across different domains and technology stacks, not merely a collection of copied templates or unrelated source folders.
+Taken together, these projects show how I approach unfamiliar domains, choose an appropriate technology stack, and carry a product from an initial specification to a working, documented software system.
 
 ## What is included
 
@@ -47,7 +47,7 @@ The projects demonstrate practical experience with:
 
 ## Repository layout
 
-Each coursework brief has a dedicated directory. The directory names preserve the original assignment organization, while the implementation and documentation were completed by me. A typical project contains:
+Each coursework brief has a dedicated directory that preserves the original assignment organization. A typical project contains:
 
 ```text
 <participant>/
@@ -68,4 +68,4 @@ Open the README in the selected participant's `task_02` directory first. Require
 4. Prepare the database and run migrations or seed scripts when provided.
 5. Start the backend and frontend using the project-specific commands.
 
-This repository is maintained as my academic engineering portfolio and as a record of complete coursework deliverables that I personally produced.
+This repository serves as both an academic record and a practical engineering portfolio of the systems I designed and delivered.
