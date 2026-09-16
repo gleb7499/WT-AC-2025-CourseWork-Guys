@@ -1,44 +1,21 @@
-# Frontend (Bug Tracker SPA)
+# Frontend - Bug Tracker SPA
 
-## Требования
+React and Vite client for project and issue management.
+
+## Requirements
 
 - Node.js 18+
-- API бекенда доступен по `VITE_API_URL` (по умолчанию `http://localhost:4000`)
+- backend available at the URL configured by `VITE_API_URL` (default: `http://localhost:4000`)
 
-## Запуск
+## Run
 
-1. Установить зависимости из корня монорепо: `npm install`
-2. Создать `.env` на основе `.env.example` и указать `VITE_API_URL`
-3. Запуск dev-сервера: `npm run dev -w frontend`
-4. Сборка: `npm run build -w frontend`
+```bash
+npm install
+copy .env.example .env
+npm run dev -w frontend
+npm run build -w frontend
+```
 
-## Реализованные сценарии
+## User flows
 
-- Аутентификация (login/register) с хранением access в памяти, refresh в HttpOnly cookie
-- Авто-ротация access токена по `/auth/refresh` при 401 и повтор запроса, иначе разлогин
-- Layout с отображением пользователя и выходом
-- Список проектов, создание (admin), удаление (admin)
-- Детали проекта:
-  - редактирование проекта (admin или владелец)
-  - список участников, смена ролей/удаление (owner/admin), добавление участника (owner/manager/admin)
-  - доска по статусам и список багов с быстрым изменением статуса, удаление (admin/owner/manager)
-  - создание бага (публичный/участник/admin)
-- Баг:
-  - просмотр деталей, статуса, приоритета
-  - редактирование полей по правам (admin/owner/manager — все поля; исполнитель или автор — описание/статус)
-  - комментарии: создание, удаление по правам
-  - вложения: добавление, удаление по правам
-
-## Замечания по доступу
-
-- Все запросы к API выполняются с `withCredentials: true` для refresh cookie
-- Недоступные действия скрыты или отображают ошибку от API
-- Ошибки выводятся в интерфейсе, без alert
-
-## Структура
-
-- `src/auth` — контекст аутентификации и работа с токенами
-- `src/api` — axios-клиент с перехватчиками и обработкой 401/refresh
-- `src/pages` — страницы (login, register, projects, project detail, bug detail)
-- `src/components` — layout, protected routes, бейджи
-- `src/types.ts` — общие типы, синхронизированные с backend DTO
+The SPA supports registration and login, protected routing, project and member management, bug CRUD, comments, attachments, and role-aware views. Access tokens are kept in memory; an expired token is refreshed through `/auth/refresh` using the HttpOnly cookie before the original request is retried.

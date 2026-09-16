@@ -1,68 +1,29 @@
-# Инструкция по запуску
+# Full-Stack Application - Local Run Guide
 
-## Запуск клиентской части
+This project contains a Vite frontend and a Python backend.
 
-### Шаги
+## Frontend
 
-Перейти в директорию фронтенда:
-
-```
+```bash
 cd frontend
-```
-
-Установить зависимости:
-
-```
 npm install
-```
-
-Запустить проект:
-
-```
 npm run dev
 ```
 
-Где смотреть результат:
+The frontend is usually available at `http://localhost:5173`; the exact URL and port are printed by Vite.
 
-- обычно http://localhost:5173
-- точный URL/порт будет в терминале
+## Backend
 
----
+Python 3.11 is required.
 
-## Запуск сервеной части
-
-**Python 3.11 (ОБЯЗАТЕЛЬНО)** — другие версии не подходят
-
-### Шаги
-
-Перейти в папку **backend**
-
-```
+```bash
 cd backend
-```
-
-Создать виртуальное окружение через Python 3.11
-
-```
 py -3.11 -m venv .venv
-```
-
-Активировать виртуальное окружение
-
-```
 .\.venv\Scripts\Activate.ps1
-```
-
-> Если PowerShell ругается на запуск скриптов, выполните: ```Set-ExecutionPolicy -Scope CurrentUser RemoteSigned```
-
-Установить зависимости:
-
-```
 pip install -r requirements.txt
-```
-
-Запустить сервер через main.py
-
-```
 python main.py
 ```
+
+If PowerShell blocks script activation, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once and activate the environment again.
+
+Keep the backend and frontend running in separate terminals while developing.

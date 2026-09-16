@@ -1,71 +1,24 @@
-# Инструкция по запуску (Next.js)
+# Job Board Application (Next.js)
 
-## Требования
+A full-stack job board MVP for publishing vacancies, managing resumes, processing applications, and supporting communication between candidates and companies.
 
-Node.js v20+ (обязательно)
-Пакетный менеджер: **npm / yarn / pnpm** (любой)
-Python 3.11** (обязательно)
+## Requirements
 
----
+- Node.js 20+
+- npm, Yarn, or pnpm
+- Python 3.11+ for the supporting tooling used by the project
+- MongoDB running locally
 
-## Установка и запуск
-
-### 1 Перейдите в папку проекта
+## Install and run
 
 ```bash
 cd <project-folder>
-```
-
-### 2 Установите зависимости
-
-```bash
 npm install
-```
-
-### 3 Запустите проект в режиме разработки
-
-```bash
 npm run dev
 ```
 
-### 4 Откройте в браузере
+Open `http://localhost:3000` in a browser. Use the environment variables documented in the source configuration when connecting to a non-default MongoDB instance.
 
-Обычно Next.js стартует на:
+## Main domain objects
 
-* `http://localhost:3000`
-
-(Если порт другой — он будет показан в консоли после запуска.)
-
----
-
-## Сервер (Python)
-
-### 1 Перейдите в папку backend
-
-```bash
-cd backend
-```
-
-### 2 Создайте виртуальное окружение
-
-```bash
-py -3.11 -m venv venv
-```
-
-### 3)Активируйте окружение
-
-```bash
-venv\Scripts\activate
-```
-
-### 4 Установите зависимости
-
-```bash
-pip install -r requirements.txt
-```
-
-### 5 Запустите сервер
-
-```bash
-python main.py
-```
+The application is organized around users, companies, jobs, resumes, applications, and messages. Next.js provides the UI and server-side API routes in one application, which keeps the local development workflow compact and easy to evaluate.

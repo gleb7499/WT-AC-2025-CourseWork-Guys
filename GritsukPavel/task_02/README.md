@@ -1,71 +1,31 @@
-# Оффер где? — Вариант 32
+# Offer Tracker (Variant 32)
 
-MVP трекер откликов на вакансии (канбан, компании, вакансии, этапы, заметки, напоминания) на стеке React + Express + PostgreSQL.
+An MVP job application tracker that helps users manage companies, vacancies, application stages, notes, reminders, and a kanban workflow.
 
-## Требования
+## Stack
 
-- Node.js 18+ (npm 9+)
-- PostgreSQL 14+
+- React, TypeScript, Vite
+- Node.js, Express, TypeScript
+- PostgreSQL and Prisma
+- JWT access/refresh authentication, bcrypt, Zod
 
-## Запуск всего проекта одной командой
+## Features
 
-1) Установить зависимости:
+- company and vacancy management;
+- customizable application stages;
+- kanban board for tracking applications;
+- notes and reminders;
+- admin and user roles with ownership checks;
+- rate limiting for authentication endpoints;
+- secure cookies, Helmet, CORS, and validation.
 
- ```bash
- npm install
- ```
+## Run
 
-1) Настроить переменные окружения для backend (см. `apps/backend/.env.example`):
+```bash
+npm install
+npm run prisma:migrate
+npm run prisma:seed
+npm run dev
+```
 
- ```bash
- # bash
- cp apps/backend/.env.example apps/backend/.env
- # или в Windows cmd
- copy apps\backend\.env.example apps\backend\.env
- ```
-
- Обязательные поля: `DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `CORS_ORIGIN` (origin фронтенда), `COOKIE_DOMAIN` (в dev можно оставить `localhost`).
-
-1) Применить миграции:
-
- ```bash
- npm run prisma:migrate
- ```
-
-1) (Опционально) заполнить демо-данные:
-
- ```bash
- cd apps/backend
- npx prisma db seed
- cd ../..
- ```
-
-1) Запустить backend и frontend вместе из корня:
-
- ```bash
- npm run dev
- ```
-
-- Backend: <http://localhost:3000>
-
-- Frontend: <http://localhost:5173>
-
-## Как проверить работоспособность
-
-1. Регистрация: на фронтенде перейдите на `/register`, создайте пользователя. Access выдаётся сразу, refresh сохраняется в httpOnly cookie.
-2. Вход: `/login` с существующим пользователем.
-3. Обновление access через refresh (ротация):
-
-- В `.env` можно временно уменьшить `JWT_ACCESS_TTL` (например, `15s`) и перезапустить backend.
-- Дождитесь истечения access, сделайте любой запрос из фронтенда. Клиент выполнит `POST /api/auth/refresh` с cookie, обновит access и повторит запрос.
-
-1. Выход: кнопка Logout отправляет `POST /api/auth/logout`, refresh cookie очищается. Повторный `POST /api/auth/refresh` вернёт 401.
-1. Основной сценарий (под авторизованным пользователем): создать компанию → создать вакансию → добавлять этапы, заметки, напоминания → проверить канбан.
-
-## Структура монорепозитория
-
-- apps/backend — Express + Prisma API
-- apps/frontend — React SPA (Vite)
-- task_01 — документация R1 по варианту
-
-Подробности по запуску и сценариям см. в `apps/backend/README.md` и `apps/frontend/README.md`.
+Configure `apps/backend/.env` and `apps/frontend/.env` using the provided examples. Service-specific API and UI notes are documented in the nested README files.

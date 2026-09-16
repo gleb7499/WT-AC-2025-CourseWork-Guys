@@ -1,18 +1,40 @@
-# Вариант 30 — Мини‑курсы «Учусь быстро" (Kotkovets)
+# Mini-Courses Platform (Variant 30)
 
-Мини‑проекты для курса: Python + Flask + SQLite
+A compact learning platform built with Python, Flask, and SQLite. The project demonstrates the design of a practical MVP for managing short courses, lessons, learning progress, tests, comments, and user accounts.
 
-MVP реализовано в этой папке: Courses, Lessons (video URL), Progress, Tests (model skeleton), Comments, Users (register/login).
+## Implemented scope
 
-Run:
+- course and lesson management;
+- video lesson links and progress tracking;
+- test model foundation;
+- comments and user registration/login;
+- SQLite persistence with demo data seeding.
 
-- python -m venv .venv
-- .\.venv\Scripts\activate
-- pip install -r requirements.txt
-- Set FLASK_APP=run.py (Windows: `set FLASK_APP=run.py`)
-- python db_init.py  # creates SQLite DB and seeds demo data
-- flask run
+## Requirements
 
-Tests:
+- Python 3.11+
+- packages listed in `requirements.txt`
 
-- pytest
+## Local setup
+
+```bash
+python -m venv .venv
+.\\.venv\\Scripts\\activate
+pip install -r requirements.txt
+```
+
+Set the Flask application and initialize the database:
+
+```bash
+set FLASK_APP=run.py
+python db_init.py
+flask run
+```
+
+On Windows PowerShell, use `$env:FLASK_APP = "run.py"` instead of `set FLASK_APP=run.py`.
+
+## Tests
+
+```bash
+pytest
+```

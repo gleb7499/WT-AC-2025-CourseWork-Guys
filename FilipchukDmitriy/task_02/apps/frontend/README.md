@@ -1,92 +1,25 @@
-# Frontend — "Пишем вдвоём" 📝
+# Frontend - Collaborative Notes
 
-SPA-клиент для приложения совместных заметок.
+React SPA for shared notebooks and notes.
 
-## Стек
+## Technology
 
-- React 18 + TypeScript
-- Vite
-- react-router-dom
-- react-hook-form + zod
-- fetch API (credentials: 'include')
+- React 18 and TypeScript
+- Vite and React Router
+- React Hook Form with Zod validation
+- Fetch API with `credentials: include`
 
-## Требования
+## Features
 
-- Node.js >= 18
-- Запущенный backend (см. apps/backend/README.md)
+The UI includes authentication, protected routes, notebook and note management, labels, shared access, history browsing, and restore actions. Authentication keeps the access token in application state while the refresh token remains in an HttpOnly cookie managed by the backend.
 
-## Установка
+## Run
 
-```
-cd apps/frontend
+From the monorepo root:
+
+```bash
 npm install
+npm run dev:frontend
 ```
 
-## Конфигурация
-
-Создайте .env из .env.example и задайте:
-
-- VITE_API_URL (например <http://localhost:4000>)
-
-## Запуск
-
-- Dev: `npm run dev` (<http://localhost:5173>)
-- Build: `npm run build`
-- Preview: `npm run preview`
-
-## Как работает auth
-
-- Access token хранится в памяти (AuthContext).
-- Refresh token живёт в HttpOnly cookie на backend.
-- Все запросы идут с credentials: 'include'.
-- При 401 фронт делает POST /auth/refresh, получает новый access и повторяет запрос. Если refresh невалиден — принудительный logout.
-
-## Основные страницы и сценарии
-
-- /login, /register — аутентификация и регистрация
-- /notebooks — список тетрадей, создание/редактирование/удаление
-- /notebooks/:id — заметки внутри тетради
-- /notes/:id — просмотр, редактирование, удаление, история и восстановление версий
-- /labels — управление метками (системные доступны только admin)
-- /shared — тетради, которыми поделились
-- /admin/users — управление пользователями (admin)
-
-## Роли и права
-
-- user: CRUD своих тетрадей/заметок/меток, шаринг своих тетрадей
-- admin: все возможности user + системные метки + управление пользователями
-
-## Структура
-
-```
-src/
-├── api/          # клиенты auth, notebooks, notes, labels, shares, users
-├── components/   # layout, ui, guard-компоненты
-├── context/      # AuthContext (access в памяти, refresh через cookie)
-├── lib/          # validation (zod)
-├── pages/        # страницы приложения
-├── types/        # типы, синхронизированные с backend
-├── config.ts     # VITE_API_URL
-├── App.tsx       # роутинг
-└── styles.css    # CSS utilities
-```
-
-## Демонстрация (UI)
-
-1) Зарегистрировать пользователя или войти под seed-аккаунтом (admin / Admin123!, alice / User123!, bob / User234!, charlie / User345!).
-2) Создать тетрадь, заметку, добавить метку.
-3) Подождать истечения access (в dev можно уменьшить JWT_ACCESS_TTL в apps/backend/.env) — убедиться в авто-refresh.
-4) Поделиться тетрадью, проверить доступ под другим пользователем.
-5) Выйти (Logout) — refresh-cookie очищается, повторный refresh вернёт 401.
-
-## Обработка ошибок и UX
-
-- Toast-уведомления для ошибок API.
-- Ошибки валидации под полями формы.
-- Спиннеры и пустые состояния там, где нужно.
-
-## Безопасность
-
-- Никаких токенов в localStorage/sessionStorage.
-- HttpOnly refresh cookie + CORS с credentials.
-- Access только в памяти компонента.
+Configure the API URL in the frontend environment file when the backend is not running on its default local address.

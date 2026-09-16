@@ -1,92 +1,24 @@
 # Zafid
 
-- **Backend**: Node.js + Express
-- **Frontend**: Next.js
+A full-stack application with an Express backend and a Next.js frontend.
 
----
+## Requirements
 
-## 1) Требования
+- Node.js 18+ (Node.js 20+ recommended)
+- npm, Yarn, or pnpm
 
-- **Node.js**: v18+ (желательно v20+)
-- **npm** (или yarn/pnpm)
+## Installation
 
----
-
-## 2) Установка зависимостей
-
-### Backend (Express)
-
-Перейдите в папку сервера и установите зависимости:
+Install dependencies in the backend and frontend directories according to their package manifests:
 
 ```bash
-cd backend
-npm install
-````
-
-### Frontend (Next.js)
-
-Перейдите в папку фронтенда и установите зависимости:
-
-```bash
-cd ../frontend
 npm install
 ```
 
----
+Create the required environment files from the examples, then start the backend and frontend development processes.
 
-## 3) Переменные окружения (env)
+## Architecture
 
-### env - Backend
+The backend provides the application API and business logic. Next.js renders the frontend and handles the client-side workflow. The project is organized so that authentication, domain operations, and UI concerns remain easy to test and maintain.
 
-в файле ```secrets.txt``` найти
-
-```bash
-=== BACKEND ===
-
-MONGO_URI=***
-PORT=***
-JWT_SECRET=***
-JWT_EXPIRES_IN=***
-...
-```
-
-### env - Frontend
-
-```bash
-=== FRONTEND ===
-
-NEXT_PUBLIC_API_BASE_URL=***
-NEXT_PUBLIC_API_ADMIN_BASE_URL=***
-NODE_ENV=***
-NEXT_PUBLIC_S3_PUBLIC_URL=***
-```
-
----
-
-## 4) Запуск проекта
-
-Открой два терминала.
-
-### Терминал 1 - Backend
-
-```bash
-cd backend
-npm run dev
-```
-
-Обычно сервер запускается на:
-
-- `http://localhost:3001` (или другой порт из `.env`)
-
-### Терминал 2 - Frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
-Фронт обычно доступен на:
-
-- `http://localhost:3000`
-
----
+Refer to the package scripts and environment examples in this directory for the exact local commands.

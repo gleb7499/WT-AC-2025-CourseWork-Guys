@@ -1,40 +1,24 @@
-# Как запустить проект
+# Help Desk Application (Next.js)
 
-> Примечание: проект написан на **Next.js** — это фреймворк, который позволяет делать **фронтенд и бэкенд в рамках одного приложения**
-> (страницы/компоненты + API роуты на сервере).
+A Next.js project that combines frontend pages, reusable components, and server-side API routes in one application. The project is designed as a help desk MVP for handling requests and supporting role-aware workflows.
 
-## 1) Требования
+## Requirements
 
-- **Node.js**: рекомендуется **v20+**
-- Менеджер пакетов: **npm**
-- Установленная локально База Данных **MongoDB**
+- Node.js 20+
+- npm
+- MongoDB running locally
 
-## 2) Установка зависимостей
+## Install and run
 
 ```bash
 npm install
-```
-
-## 3) Запуск в режиме разработки
-
-```bash
 npm run dev
 ```
 
-После запуска необходимо открыть:
+Open `http://localhost:3000` in a browser.
 
-- http://localhost:3000
+## Architecture
 
-## 4) Сборка и запуск
+Next.js provides the user interface and backend API routes inside the same application. The structure keeps request handling, data access, and page-level workflows close together while remaining easy to run and evaluate locally.
 
-Сборка:
-
-```bash
-npm run build
-```
-
-Запуск:
-
-```bash
-npm run start
-```
+The `src/README.md` file contains the framework-generated development notes for the application source.

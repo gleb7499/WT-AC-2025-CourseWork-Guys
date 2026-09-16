@@ -1,44 +1,31 @@
-# Баг-трекер «Не баг, а фича?» (Вариант 11)
+# Bug Tracker "Not a Bug, It Is a Feature" (Variant 11)
 
-Full-stack монорепозиторий: React + Vite (frontend) и Express + Prisma + PostgreSQL (backend).
+A full-stack issue tracking system for projects, team members, bugs, comments, and attachments.
 
-## Требования
+## Stack
 
-- Node.js 18+
-- PostgreSQL доступный по `DATABASE_URL`
+- Frontend: React, TypeScript, Vite, React Router
+- Backend: Express, TypeScript, Prisma
+- Database: PostgreSQL
+- Auth: JWT access/refresh tokens with rotation
+- Security: bcrypt, Zod, Helmet, CORS, and HttpOnly cookies
 
-## Структура
+## Features
 
-- apps/backend — API, JWT (access+refresh), Prisma, PostgreSQL
-- apps/frontend — SPA на React + TypeScript + react-router
+- project creation and membership management;
+- bug CRUD with priorities, statuses, comments, and attachments;
+- project roles: owner, manager, developer, and viewer;
+- global administrator role;
+- ownership and permission matrix enforced by the API;
+- access-token refresh and reuse detection.
 
-## Быстрый запуск всего проекта
+## Quick start
 
-1. В корне: `npm install`
-2. Настройте окружения:
-   - [apps/backend/.env.example](apps/backend/.env.example) → `.env` (DATABASE_URL, CORS_ORIGIN, JWT_*). Для быстрой проверки ротации можно временно установить `JWT_ACCESS_TTL=15s`.
-   - [apps/frontend/.env.example](apps/frontend/.env.example) → `.env` (VITE_API_URL — URL backend, например <http://localhost:4000>)
+```bash
+npm install
+npm run prisma:migrate
+npm run prisma:seed
+npm run dev
+```
 
-3. Миграции: `npm run prisma:migrate:dev -w backend -- --name init`
-4. Seed: `npm run prisma:seed -w backend`
-5. Запуск обоих сервисов одной командой: `npm run dev`
-
-- Backend: <http://localhost:4000/health>
-- Frontend: <http://localhost:5173>
-
-## Как проверить работоспособность (ручной сценарий)
-
-1. Открыть фронтенд → Register (создать пользователя) или использовать seed-пользователей из backend README.
-2. Login → в шапке видно текущего пользователя.
-3. Проверка ротации access:
-
-   - Установите в backend `.env` `JWT_ACCESS_TTL=15s`, перезапустите backend.
-   - Подождите 15–20 секунд, выполните действие (например, обновить список проектов). Клиент получит 401, сделает `POST /auth/refresh` с cookie, повторит запрос и останется авторизован.
-   - После Logout refresh cookie очищается; повторный `/auth/refresh` вернёт 401, клиент разлогинится.
-
-4. Основной сценарий: создать проект (admin), открыть проект, создать баг, сменить статус, добавить комментарий/вложение.
-
-## Дополнительно
-
-- Детали по API, ролям и seed — в [apps/backend/README.md](apps/backend/README.md)
-- Детали по SPA, страницам и ролям UI — в [apps/frontend/README.md](apps/frontend/README.md)
+Configure `DATABASE_URL`, JWT secrets, and `VITE_API_URL` using the supplied environment examples. See the backend and frontend README files for service-specific details.
