@@ -69,3 +69,7 @@ Open the README in the selected participant's `task_02` directory first. Require
 5. Start the backend and frontend using the project-specific commands.
 
 This repository serves as both an academic record and a practical engineering portfolio of the systems I designed and delivered.
+
+## License
+
+This repository is available under the [Creative Commons Attribution-NonCommercial 4.0 International license](LICENSE). Non-commercial sharing and adaptation are permitted with attribution to Loginov Gleb; commercial use requires prior written permission.
