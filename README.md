@@ -1,6 +1,20 @@
-# Web Technologies Coursework Portfolio
+# Web Technologies Coursework Portfolio by Loginov Gleb
 
-This repository contains a portfolio of full-stack coursework projects developed for the Web Technologies course. Each project was designed, implemented, documented, and prepared for local evaluation as a standalone application.
+This is my portfolio of full-stack coursework projects for the Web Technologies course. I am Loginov Gleb, and I personally completed, assembled, documented, and prepared every project in this repository for evaluation.
+
+The student names used as directory names identify the individual coursework briefs and delivery tracks. They do not represent separate authors of the implementations collected here: the development work across this repository was carried out by me.
+
+## My contribution
+
+I handled the complete delivery process for every project represented in this repository:
+
+- analyzed the assigned domain and transformed requirements into a workable product scope;
+- designed the application structure, data models, roles, permissions, and API contracts;
+- implemented the frontend, backend, database integration, and authentication flows;
+- added validation, error handling, security measures, seed data, and automated checks where applicable;
+- prepared run instructions, technical documentation, coursework reports, and evaluation-ready project structure.
+
+This repository therefore demonstrates my ability to deliver multiple independent software systems across different domains and technology stacks, not merely a collection of copied templates or unrelated source folders.
 
 ## What is included
 
@@ -33,7 +47,7 @@ The projects demonstrate practical experience with:
 
 ## Repository layout
 
-Each participant has a dedicated directory. A typical project contains:
+Each coursework brief has a dedicated directory. The directory names preserve the original assignment organization, while the implementation and documentation were completed by me. A typical project contains:
 
 ```text
 <participant>/
@@ -54,4 +68,4 @@ Open the README in the selected participant's `task_02` directory first. Require
 4. Prepare the database and run migrations or seed scripts when provided.
 5. Start the backend and frontend using the project-specific commands.
 
-This repository is maintained as an academic engineering portfolio and as a record of complete coursework deliverables.
+This repository is maintained as my academic engineering portfolio and as a record of complete coursework deliverables that I personally produced.
